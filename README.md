@@ -1,3 +1,3 @@
 # level5selfdriving
 
-![MVC](https://raw.githubusercontent.com/culring/level5autonomous-driving/blob/master/MVC.png)
+![MVC](https://github.com/culring/level5autonomous-driving/blob/master/MVC.png)
