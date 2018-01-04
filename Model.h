@@ -1,13 +1,13 @@
 #define TRACK_SIZE 16
 
-class Model
+class Race
 {
 public:
 	Car *vehicle;
 	Track *map;
 	
-	Model();
-	~Model();
+	Race();
+	~Race();
 };
 
 
@@ -30,7 +30,7 @@ public:
 	Track();
 	~Track();
 	
-	void Update(float posX, float posY, float faceDir, int segmentType, float rads);				// replace old segments with new ones
+	void update(float posX, float posY, float faceDir, int segmentType, float rads);				// replace old segments with new ones
 };
 
 
