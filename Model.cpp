@@ -24,7 +24,7 @@ Car::Car()
 
 Car::~Car()
 {
-	
+
 }
 
 
@@ -38,11 +38,11 @@ Track::~Track()
 {
 	delete[] segList;
 }
-	
+
 void Track::update(float posX, float posY, float faceDir, int segmentType, float rads)
 {
 	segList[k].setSegment(float posX, float posY, float faceDir, int segmentType, float rads);
-	
+
 	k = ++k % TRACK_SIZE;
 }
 
@@ -68,7 +68,7 @@ Segment::Segment(float posX, float posY, float faceDir, int segmentType, float r
 
 ~Segment::Segment()
 {
-	
+
 }
 
 void Segment::setSegment(float posX, float posY, float faceDir, int segmentType, float rads)
