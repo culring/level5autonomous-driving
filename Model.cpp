@@ -1,13 +1,13 @@
 #include "Model.h"
 
 
-Model::Model()
+Race::Race()
 {
 	vehicle = new Car;
 	map = new Track;
 }
 
-Model::~Model()
+Race::~Race()
 {
 	delete vehicle;
 	delete map;
@@ -39,7 +39,7 @@ Track::~Track()
 	delete[] segList;
 }
 	
-void Track::Update(float posX, float posY, float faceDir, int segmentType, float rads)
+void Track::update(float posX, float posY, float faceDir, int segmentType, float rads)
 {
 	segList[k].setSegment(float posX, float posY, float faceDir, int segmentType, float rads);
 	
