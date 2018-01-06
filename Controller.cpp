@@ -14,19 +14,19 @@
 #include <windows.h>
 // #include <SFML/Graphics.hpp>
 
-MainController::MainController() {}
+Controller::Controller() {}
 
 /*
-MainController::MainController(Model m, View v) {
+Controller::Controller(Model m, View v) {
 	this->model = m;
 	this->view = v;
 	this->window = v->window;
 }
 */
 
-MainController::~MainController() {}
+Controller::~Controller() {}
 
-void MainController::menu() {
+void Controller::menu() {
 	/*
 	sf::Event event;
 
@@ -36,9 +36,7 @@ void MainController::menu() {
 		 	 	 // e.g. start player mode
 		 	 	 this->view.initPlayerMode();
 		 	 	 this->model.initPlayerMode();
-		 	 	 PlayerController *pc = new PlayerController(this->model, this->view);
-		 	 	 pc.steering();
-		 	 	 delete pc;
+		 	 	 playerMode();
 		 	 } ...
 		 } else if (sf::Event::EventType::Closed) {
 		 	 this->view.closeWindow();
@@ -47,19 +45,7 @@ void MainController::menu() {
 	*/
 }
 
-PlayerController::PlayerController() {}
-
-/*
-MainController::MainController(Model m, View v) {
-	this->model = m;
-	this->view = v;
-	this->window = v->window;
-}
-*/
-
-PlayerController::~PlayerController() {}
-
-void PlayerController::steering() {
+void Controller::playerMode() {
 	/*
 	sf::Event event;
 
@@ -84,19 +70,7 @@ void PlayerController::steering() {
 	*/
 }
 
-AIController::AIController() {}
-
-/*
-MainController::MainController(Model m, View v) {
-	this->model = m;
-	this->view = v;
-	this->window = v->window;
-}
-*/
-
-AIController::~AIController() {}
-
-void AIController::endRace() {
+void Controller::aiMode() {
 	/*
 	sf::Event event;
 

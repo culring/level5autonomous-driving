@@ -8,40 +8,18 @@
 #ifndef CONTROLLER_H_
 #define CONTROLLER_H_
 
-class MainController {
+class Controller {
 private:
 	//Model *model;
 	//View *view;
 	//sf::Window *window;
 public:
-	MainController();
-	//MainController(Model m, View v);
-	~MainController();
+	Controller();
+	//Controller(Model m, View v);
+	Controller();
 	void menu();
-};
-
-class PlayerController {
-private:
-	//Model *model;
-	//View *view;
-	//sf::Window *window;
-public:
-	PlayerController();
-	//PlayerController(Model m, View v);
-	~PlayerController();
-	void steering();
-};
-
-class AIController {
-private:
-	//Model *model;
-	//View *view;
-	//sf::Window *window;
-public:
-	AIController();
-	//AIController(Model m, View v);
-	~AIController();
-	void endRace();
+	void playerMode();
+	void aiMode();
 };
 
 #endif /* CONTROLLER_H_ */
