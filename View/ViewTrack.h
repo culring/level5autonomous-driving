@@ -7,11 +7,8 @@
 
 #include "ViewSegment.h"
 
-namespace view
-{
-    class Track {
-        Segment segments[];
-    };
-}
+class ViewTrack {
+    ViewSegment segments[];
+};
 
 #endif //LEVEL5AUTONOMOUS_DRIVING_TRACK_H

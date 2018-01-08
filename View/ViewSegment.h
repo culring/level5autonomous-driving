@@ -5,18 +5,14 @@
 #ifndef LEVEL5AUTONOMOUS_DRIVING_SEGMENT_H
 #define LEVEL5AUTONOMOUS_DRIVING_SEGMENT_H
 
-namespace view
-{
-    enum SegmentType{
-        ANGLE_30,
-        ANGLE_45,
-        ANGLE_60,
-        ANGLE_90
-    };
+enum ViewSegmentType{
+    ANGLE_0,
+    ANGLE_90,
+    ANGLE_180
+};
 
-    class Segment {
-        SegmentType segmentType;
-    };
-}
+class ViewSegment {
+    ViewSegmentType segmentType;
+};
 
 #endif //LEVEL5AUTONOMOUS_DRIVING_SEGMENT_H

@@ -5,7 +5,7 @@
 #ifndef LEVEL5AUTONOMOUS_DRIVING_CAMERA_H
 #define LEVEL5AUTONOMOUS_DRIVING_CAMERA_H
 
-class Camera {
+class ViewCamera {
 
 };
 

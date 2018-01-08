@@ -10,8 +10,8 @@ class View {
 
 public:
     void addModel(Model model);
-    void setCarPosition(float positionX, float positionY);
-    void setCarDirection(float direction);
+    void initializeRace();
+    void updateCar();
 };
 
 #endif //LEVEL5AUTONOMOUS_DRIVING_VIEW_H

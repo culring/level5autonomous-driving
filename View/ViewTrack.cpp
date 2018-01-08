@@ -3,8 +3,3 @@
 //
 
 #include "ViewTrack.h"
-
-namespace view
-{
-
-}

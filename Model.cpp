@@ -3,8 +3,8 @@
 
 Race::Race()
 {
-	vehicle = new Car;
-	map = new Track;
+	vehicle = new ViewCar;
+	map = new ViewTrack;
 }
 
 Race::~Race()
@@ -15,31 +15,31 @@ Race::~Race()
 
 
 
-Car::Car()
+ViewCar::ViewCar()
 {
 	x = 0;
 	y = 0;
 	dir = 0.0f;
 }
 
-Car::~Car()
+ViewCar::~ViewCar()
 {
 
 }
 
 
-Track::Track()
+ViewTrack::ViewTrack()
 {
 	k = 0;
-	segList = new Segment[TRACK_SIZE];
+	segList = new ViewSegment[TRACK_SIZE];
 }
 
-Track::~Track()
+ViewTrack::~ViewTrack()
 {
 	delete[] segList;
 }
 
-void Track::update(float posX, float posY, float faceDir, int segmentType, float rads)
+void ViewTrack::update(float posX, float posY, float faceDir, int segmentType, float rads)
 {
 	segList[k].setSegment(float posX, float posY, float faceDir, int segmentType, float rads);
 
@@ -48,7 +48,7 @@ void Track::update(float posX, float posY, float faceDir, int segmentType, float
 
 
 
-Segment::Segment()
+ViewSegment::ViewSegment()
 {
 	x = 0;
 	y = 0;
@@ -57,7 +57,7 @@ Segment::Segment()
 	rad = 0.0f;
 }
 
-Segment::Segment(float posX, float posY, float faceDir, int segmentType, float rads)
+ViewSegment::ViewSegment(float posX, float posY, float faceDir, int segmentType, float rads)
 {
 	x = posX;
 	y = posY;
@@ -66,12 +66,12 @@ Segment::Segment(float posX, float posY, float faceDir, int segmentType, float r
 	rad = rads;
 }
 
-~Segment::Segment()
+~ViewSegment::ViewSegment()
 {
 
 }
 
-void Segment::setSegment(float posX, float posY, float faceDir, int segmentType, float rads)
+void ViewSegment::setSegment(float posX, float posY, float faceDir, int segmentType, float rads)
 {
 	x = posX;
 	y = posY;

@@ -4,27 +4,27 @@
 
 #include "ViewCar.h"
 
-Car::Car()
+ViewCar::ViewCar()
 {
 
 }
-Car::~Car()
+ViewCar::~ViewCar()
 {
 
 }
 
-void Car::updatePosition(float positionX, float positionY)
+void ViewCar::updatePosition(float positionX, float positionY)
 {
     m_positionX = positionX;
     m_positionY = positionY;
 }
 
-void Car::setSpeed(float speed)
+void ViewCar::setSpeed(float speed)
 {
     m_speed = speed;
 }
 
-void Car::setSteering(float steering)
+void ViewCar::setSteering(float steering)
 {
     m_steering = steering;
 }

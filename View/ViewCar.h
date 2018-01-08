@@ -5,7 +5,7 @@
 #ifndef LEVEL5AUTONOMOUS_DRIVING_CAR_H
 #define LEVEL5AUTONOMOUS_DRIVING_CAR_H
 
-class Car {
+class ViewCar {
     // current car's position
     float m_positionX, m_positionY;
     // current car's speed
@@ -16,8 +16,8 @@ class Car {
     void move();
 
 public:
-    Car();
-    ~Car();
+    ViewCar();
+    ~ViewCar();
 
     void updatePosition(float positionX, float positionY);
     void setSpeed(float speed);

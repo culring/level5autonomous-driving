@@ -11,30 +11,30 @@ public:
 };
 
 
-class Car
+class ViewCar
 {
 public:
 	float x, y, dir;			// car's current position and direction it's facing
 	
-	Car();
-	~Car();
+	ViewCar();
+	~ViewCar();
 };
 
 
-class Track
+class ViewTrack
 {
 public:
 	Segment *segList;			// current track
 	int k;
 	
-	Track();
-	~Track();
+	ViewTrack();
+	~ViewTrack();
 	
 	void update(float posX, float posY, float faceDir, int segmentType, float rads);				// replace old segments with new ones
 };
 
 
-class Segment
+class ViewSegment
 {
 public:
 	float x, y, dir;
@@ -42,9 +42,9 @@ public:
 	
 	float rad;					// turn degree (0 for straight segments)
 	
-	Segment();
-	Segment(float posX, float posY, float faceDir, int segmentType, float rads);
-	~Segment();
+	ViewSegment();
+	ViewSegment(float posX, float posY, float faceDir, int segmentType, float rads);
+	~ViewSegment();
 	
 	void setSegment(float posX, float posY, float faceDir, int segmentType, float rads);
 };
