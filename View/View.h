@@ -5,11 +5,13 @@
 #ifndef LEVEL5AUTONOMOUS_DRIVING_VIEW_H
 #define LEVEL5AUTONOMOUS_DRIVING_VIEW_H
 
+#include "../Model.h"
+
 class View {
-    Model m_model;
+    Race m_model;
 
 public:
-    void addModel(Model model);
+    void addModel(Race model);
     void initializeRace();
     void updateCar();
 };
