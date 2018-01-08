@@ -5,7 +5,7 @@
 #ifndef LEVEL5AUTONOMOUS_DRIVING_TRACK_H
 #define LEVEL5AUTONOMOUS_DRIVING_TRACK_H
 
-#include "Segment.h"
+#include "ViewSegment.h"
 
 namespace view
 {
