@@ -6,7 +6,7 @@ set(SOURCE_FILES main.cpp Model.cpp View/ViewCar.cpp View/ViewTrack.cpp View/Vie
 add_executable(level5autonomous-driving ${SOURCE_FILES})       # Add executable target with source files listed in SOURCE_FILES variable
 
 # Detect and add SFML
-set(SFML_ROOT "View/SFML-2.4.1")
+set(SFML_ROOT "SFML-2.4.1")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_modules")
 find_package(SFML REQUIRED system window graphics network audio)
 if(SFML_FOUND)
