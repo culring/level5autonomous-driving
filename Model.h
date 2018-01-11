@@ -16,6 +16,8 @@ public:
 	
 	void accel();
 	void slow();
+	
+	void update();
 };
 
 
