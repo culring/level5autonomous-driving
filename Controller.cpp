@@ -61,16 +61,16 @@ void Controller::playerMode() {
 			if(event.type == sf::Event::EventType::KeyPressed) {
 				if(sf::Keyboard::Key::Left == event.key.code || sf::Keyboard::Key::A == event.key.code) {
 					//turn left
-					std::cout << "Pressed left" << std::endl;
+					std::cout << "Turn left" << std::endl;
 				} else if(sf::Keyboard::Key::Right == event.key.code || sf::Keyboard::Key::D == event.key.code) {
 					//turn right
-					std::cout << "Pressed right" << std::endl;
+					std::cout << "Turn right" << std::endl;
 				} else if(sf::Keyboard::Key::Up == event.key.code || sf::Keyboard::Key::W == event.key.code) {
 					//accelerate
-					std::cout << "Pressed up" << std::endl;
+					std::cout << "Accelerate" << std::endl;
 				} else if(sf::Keyboard::Key::Down == event.key.code || sf::Keyboard::Key::S == event.key.code) {
 					//decelerate
-					std::cout << "Pressed down" << std::endl;
+					std::cout << "Decelerate" << std::endl;
 				} else if(sf::Keyboard::Key::Escape == event.key.code) {
 					//end race, back to menu
 					//model.endRace();

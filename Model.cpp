@@ -86,7 +86,7 @@ Segment::Segment(float posX, float posY, float faceDir, int segmentType, float r
 	rad = rads;
 }
 
-~Segment::Segment() {}
+Segment::~Segment() {}
 
 void Segment::setSegment(float posX, float posY, float faceDir, int segmentType, float rads)
 {
@@ -113,7 +113,7 @@ Track::~Track()
 
 void Track::update(float posX, float posY, float faceDir, int segmentType, float rads)
 {
-	segList[k].setSegment(float posX, float posY, float faceDir, int segmentType, float rads);
+	segList[k].setSegment(posX, posY, faceDir, segmentType, rads);
 
 	k = ++k % TRACK_SIZE;
 }
@@ -140,25 +140,25 @@ Segment* Race::getMap()
 
 float Race::getCarX()
 {
-	return vehicle.x;
+	return vehicle->x;
 }
 
 float Race::getCarY()
 {
-	return vehicle.y;
+	return vehicle->y;
 }
 
 float Race::getCarDir()
 {
-	return vehicle.dir;
+	return vehicle->dir;
 }
 
 float Race::getCarSpeed()
 {
-	return vehicle.speed;
+	return vehicle->speed;
 }
 
 float Race::getCarTurn()
 {
-	return vehicle.turn;
+	return vehicle->turn;
 }
