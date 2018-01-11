@@ -66,6 +66,11 @@ void Car::slow()
 		speed = 0.0f;
 }
 
+void Car::update()
+{
+	
+}
+
 /* Segment */
 
 Segment::Segment()
