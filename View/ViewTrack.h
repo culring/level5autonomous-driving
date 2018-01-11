@@ -8,7 +8,7 @@
 #include "ViewSegment.h"
 
 class ViewTrack {
-    ViewSegment segments[];
+    ViewSegment *segments;
 };
 
 #endif //LEVEL5AUTONOMOUS_DRIVING_TRACK_H
