@@ -8,20 +8,14 @@
 class ViewCar {
     // current car's position
     float m_positionX, m_positionY;
-    // current car's speed
-    float m_speed;
-    // current car's steering value
-    float m_steering;
+    // current car's orientation
+    float m_direction;
 
     void move();
 
 public:
-    ViewCar();
-    ~ViewCar();
-
     void updatePosition(float positionX, float positionY);
-    void setSpeed(float speed);
-    void setSteering(float steering);
+    void updateDirection(float direction);
 };
 
 #endif //LEVEL5AUTONOMOUS_DRIVING_CAR_H
