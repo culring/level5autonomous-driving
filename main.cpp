@@ -3,14 +3,16 @@
 //
 
 #include "Controller.h"
+#include "View.h"
 
 int main(void) {
-	sf::RenderWindow window( sf::VideoMode( 800, 600 ), "Kurs SFML 2.0 - http://cpp0x.pl" );
-	Controller controller(window);
+	Controller controller;
 	//Model model;
 	//View view;
 	//model.addView(view);
 	//view.addmodel(model);
 	//Controller c(model, view);
 	controller.menu();
+
+	return 0;
 }
