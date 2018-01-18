@@ -70,7 +70,7 @@ void Car::update()
 {
 	float turnRad = turn * M_PI / (180.0f * 5.0f);
 	
-	dir = dir + turn;
+	dir = dir + turn / 5.0f;
 
 	float dirRad = dir * M_PI / 180.0f;
 
