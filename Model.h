@@ -1,3 +1,5 @@
+#include <math.h>
+
 #define TRACK_SIZE 16
 
 class Car

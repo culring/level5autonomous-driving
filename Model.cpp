@@ -68,7 +68,16 @@ void Car::slow()
 
 void Car::update()
 {
+	float turnRad = turn * M_PI / (180.0f * 5.0f);
 	
+	dir = dir + turn;
+
+	float dirRad = dir * M_PI / 180.0f;
+
+	float r = speed / cos(turnRad);
+
+	x = x + r*cos(dirRad);
+	y = y + r*sin(dirRad);
 }
 
 /* Segment */
