@@ -8,8 +8,9 @@
 
 #include "Controller.h"
 
-Controller::Controller(sf::RenderWindow &w) {
-	this->window = &w;
+Controller::Controller() {
+	this->view = new View();
+	this->window = view->getWindow();
 }
 
 /*
@@ -22,6 +23,7 @@ Controller::Controller(Model m, View v) {
 
 Controller::~Controller() {
 	this->window->~RenderWindow();
+	delete view;
 }
 
 void Controller::menu() {
@@ -46,6 +48,8 @@ void Controller::menu() {
 				this->window->close();
 			}
 
+			this->window->clear();
+			this->view->display();
 			this->window->display();
 		}
 	}
@@ -83,6 +87,8 @@ void Controller::playerMode() {
 				 this->window->close();
 			}
 
+			this->window->clear();
+			this->view->display();
 			this->window->display();
 		}
 
