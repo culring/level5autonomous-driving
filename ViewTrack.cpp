@@ -3,7 +3,13 @@
 //
 
 #include "ViewTrack.h"
+#include "Textures.h"
 
-void ViewTrack::addSegment(ViewSegment segment){
+ViewTrack::ViewTrack(sf::RenderWindow* window) : m_window(window)
+{
+	verticalStraightRoadTexture.loadFromFile(ROAD_TEXTURES_DIRECTORY, VERTICAL_STRAIGHT_ROAD_RECTANGLE);
+}
+
+void ViewTrack::addSegment(ViewSegmentType segment){
     m_segments.push_back(segment);
 }
