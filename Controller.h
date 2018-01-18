@@ -9,14 +9,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <SFML/Graphics.hpp>
+#include "View.h"
 
 class Controller {
 private:
 	//Model *model;
-	//View *view;
+	View *view;
 	sf::RenderWindow *window;
 public:
-	Controller(sf::RenderWindow &w);
+	Controller();
 	//Controller(Model m, View v);
 	~Controller();
 	void menu();
