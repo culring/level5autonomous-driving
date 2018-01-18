@@ -7,12 +7,16 @@
 
 #include <vector>
 #include "ViewSegment.h"
+#include <SFML/Graphics.hpp>
 
 class ViewTrack {
-    std::vector<ViewSegment> m_segments;
+    std::vector<ViewSegmentType> m_segments;
+	sf::RenderWindow *m_window;
+	std::vector<sf::Sprite> m_sprites;
 
 public:
-    void addSegment(ViewSegment segment);
+	ViewTrack(sf::RenderWindow *window);
+    void addSegment(ViewSegmentType segment);
 };
 
 #endif //LEVEL5AUTONOMOUS_DRIVING_TRACK_H
