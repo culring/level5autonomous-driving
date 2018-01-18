@@ -10,19 +10,22 @@
 #include "ViewCar.h"
 #include "ViewTrack.h"
 #include <SFML/Graphics.hpp>
-#include <cmath>
 
 class View {
     // view variables
-    ViewCar m_viewCar;
-    ViewTrack m_viewTrack;
+    ViewCar *m_viewCar;
+    ViewTrack *m_viewTrack;
     // model
-    Race &m_model;
+    Race *m_model;
+	sf::RenderWindow *m_window;
 
 public:
-    void addModel(Race &model);
+	View();
+	~View();
     void initializeRace(std::vector<Segment> segments);
     void updateCar();
+	sf::RenderWindow* getWindow();
+	void display();
 };
 
 #endif //LEVEL5AUTONOMOUS_DRIVING_VIEW_H
