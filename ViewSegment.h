@@ -10,6 +10,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include "Textures.h"
+#include <iostream>
 
 enum ViewSegmentType {
 	VERTICAL_STRAIGHT,
@@ -21,68 +22,66 @@ enum ViewSegmentType {
 };
 
 class ViewSegment {
-	static sf::Texture verticalStraightTexture,
-		bottomRightTexture;
 public:
+	static sf::Texture verticalStraightTexture, bottomRightTexture;
+	static constexpr float scale = 0.3f;
 	ViewSegment() = delete;
+
 	static void init()
 	{
 		if(!verticalStraightTexture.loadFromFile(ROAD_TEXTURES_DIRECTORY, STRAIGHT_ROAD_RECTANGLE))
 		{
-			throw std::exception("Texture file not found");
+			throw std::exception();
 		}
+
 		if (!bottomRightTexture.loadFromFile(ROAD_TEXTURES_DIRECTORY, CORNER_ROAD_RECTANGLE))
 		{
-			throw std::exception("Texture file not found");
+			throw std::exception();
 		}
 	}
+
 	static sf::Sprite createSegment(ViewSegmentType segmentType)
 	{
 		sf::Sprite sprite;
+
 		switch (segmentType)
 		{
 			case VERTICAL_STRAIGHT:
 				sprite.setTexture(verticalStraightTexture);
-				sprite.move(-getCenter(ViewSegmentType::VERTICAL_STRAIGHT)*0.5f);
+				sprite.setOrigin(getCenter(ViewSegmentType::VERTICAL_STRAIGHT));
 				break;
 			case HORIZONTAL_STRAIGHT:
 				sprite.setTexture(verticalStraightTexture);
-				sprite.move((sf::Vector2f)verticalStraightTexture.getSize()*-0.5f);
 				sprite.rotate(90.0f);
-				sprite.move((sf::Vector2f)verticalStraightTexture.getSize()*0.5f);
-				sprite.move(-getCenter(ViewSegmentType::HORIZONTAL_STRAIGHT)*0.5f);
+				sprite.setOrigin(getCenter(ViewSegmentType::VERTICAL_STRAIGHT));
 				break;
 			case TOP_LEFT:
 				sprite.setTexture(bottomRightTexture);
-				sprite.move((sf::Vector2f)bottomRightTexture.getSize()*-0.5f);
 				sprite.rotate(180.0f);
-				sprite.move((sf::Vector2f)bottomRightTexture.getSize()*0.5f);
-				sprite.move(-getCenter(ViewSegmentType::TOP_LEFT)*0.5f);
+				sprite.setOrigin(getCenter(ViewSegmentType::BOTTOM_RIGHT));
 				break;
 			case TOP_RIGHT:
 				sprite.setTexture(bottomRightTexture);
-				sprite.move((sf::Vector2f)bottomRightTexture.getSize()*-0.5f);
-				sprite.rotate(90.0f);
-				sprite.move((sf::Vector2f)bottomRightTexture.getSize()*0.5f);
-				sprite.move(-getCenter(ViewSegmentType::TOP_RIGHT)*0.5f);
-				return sprite;
+				sprite.rotate(-90.0f);
+				sprite.setOrigin(getCenter(ViewSegmentType::BOTTOM_RIGHT));
 				break;
 			case BOTTOM_RIGHT:
 				sprite.setTexture(bottomRightTexture);
-				sprite.move(-getCenter(ViewSegmentType::BOTTOM_RIGHT)*0.5f);
+				sprite.setOrigin(getCenter(ViewSegmentType::BOTTOM_RIGHT));
 				break;
 			case BOTTOM_LEFT:
 				sprite.setTexture(bottomRightTexture);
-				sprite.move((sf::Vector2f)bottomRightTexture.getSize()*-0.5f);
-				sprite.rotate(-90.0f);
-				sprite.move((sf::Vector2f)bottomRightTexture.getSize()*0.5f);
-				sprite.move(-getCenter(ViewSegmentType::BOTTOM_LEFT)*0.5f);
+				sprite.rotate(90.0f);
+				sprite.setOrigin(getCenter(ViewSegmentType::BOTTOM_LEFT));
 				break;
 			default:
-				throw std::exception("Segment type not found");
+				throw std::exception();
 		}
+
+		sprite.scale(scale, scale);
 		return sprite;
 	}
+
 	static sf::Vector2f getCenter(ViewSegmentType segmentType)
 	{
 		switch(segmentType)
@@ -103,37 +102,42 @@ public:
 				return {509.5, 509.5};
 				break;
 			case BOTTOM_LEFT:
-				return {352.5, 509.5};
+				return {509.5, 509.5};
 				break;
 			default:
-				throw std::exception("Segment type not found");
+				throw std::exception();
 		}
 	}
+
 	static float getDistanceToBorder(ViewSegmentType segmentType)
 	{
+		float distance;
+
 		switch(segmentType)
 		{
 			case VERTICAL_STRAIGHT:
-				return 512.0f;
+				distance = 512.0f;
 				break;
 			case HORIZONTAL_STRAIGHT:
-				return 512.0f;
+				distance = 512.0f;
 				break;
 			case TOP_LEFT:
-				return 509.5f;
+				distance = 509.5f;
 				break;
 			case TOP_RIGHT:
-				return 509.5f;
+				distance = 509.5f;
 				break;
 			case BOTTOM_RIGHT:
-				return 509.5f;
+				distance = 509.5f;
 				break;
 			case BOTTOM_LEFT:
-				return 509.5f;
+				distance = 509.5f;
 				break;
 			default:
-				throw std::exception("Segment type not found");
+				throw std::exception();
 		}
+
+		return scale * distance;
 	}
 };
 

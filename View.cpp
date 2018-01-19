@@ -6,15 +6,17 @@
 #include <iostream>
 
 View::View() : 
-	m_window(new sf::RenderWindow(sf::VideoMode(800, 600), "Bylena3:<"))
+	m_window(new sf::RenderWindow(sf::VideoMode(1280, 720), "Bylena3:<"))
 {
 	m_viewCar = new ViewCar(m_window);
+	m_viewTrack = new ViewTrack(m_window);
 }
 
 View::~View()
 {
 	delete m_window;
 	delete m_viewCar;
+	delete m_viewTrack;
 }
 
 void View::updateCar(){
@@ -29,13 +31,13 @@ sf::RenderWindow* View::getWindow()
 
 void View::initializeRace(std::vector<Segment> segments){
     for(auto segment : segments){
-        ViewSegment viewSegment;
-        m_viewTrack->addSegment(std::move(viewSegment));
+        //m_viewTrack->addSegment(std::move(viewSegment));
     }
 }
 
 void View::display()
 {
 	m_window->clear(sf::Color::Blue);
+	m_viewTrack->display();
 	m_viewCar->display();
 }

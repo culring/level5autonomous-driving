@@ -3,3 +3,6 @@
 //
 
 #include "ViewSegment.h"
+
+sf::Texture ViewSegment::verticalStraightTexture;
+sf::Texture ViewSegment::bottomRightTexture;
