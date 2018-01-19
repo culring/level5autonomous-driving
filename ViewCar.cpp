@@ -12,12 +12,13 @@ ViewCar::ViewCar(sf::RenderWindow *window) : m_window(window)
 	//std::cout << GetCurrentWorkingDir() << std::endl;
 	if (!texture.loadFromFile(CAR_TEXTURES_DIRECTORY, CAR_RECTANGLE))
 	{
-		throw std::exception("Texture file not found");	
+		throw std::exception();
 	}
 	sprite.setTexture(texture);
 	auto vector = m_window->getSize();
 	sprite.setPosition((float)vector.x/2, (float)vector.y/2);
-	sprite.scale(0.25f, 0.25f);
+	sprite.scale(0.2f, 0.2f);
+	sprite.rotate(120);
 }
 
 void ViewCar::updatePosition(float positionX, float positionY)
