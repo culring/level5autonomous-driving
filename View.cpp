@@ -19,9 +19,13 @@ View::~View()
 	delete m_viewTrack;
 }
 
-void View::updateCar(){
+void View::updateCar() {
     m_viewCar->updatePosition(m_model->getCarX(), m_model->getCarY());
     m_viewCar->updateDirection(m_model->getCarDir());
+}
+
+void View::addModel(Race *m) {
+	this->m_model = m;
 }
 
 sf::RenderWindow* View::getWindow()

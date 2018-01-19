@@ -5,7 +5,7 @@
 Car::Car()
 {
 	x = 0.0f;
-	y = 0.0f;
+	y = 600.0f;
 	dir = 0.0f;
 	
 	speed = 0.0f;
@@ -16,19 +16,19 @@ Car::~Car() {}
 
 void Car::turnLeft()
 {
-	if (turn >= -60.0f)
-		turn = turn - 1.0f;
+	if (turn >= -30.0f)
+		turn = turn - 0.2f;
 }
 
 void Car::turnRight()
 {
-	if (turn <= 60.0f)
-		turn = turn + 1.0f;
+	if (turn <= 30.0f)
+		turn = turn + 0.2f;
 }
 
 void Car::stabilize()
 {
-	float rate = 2.0f;
+	float rate = 10.0f;
 	
 	if (turn > 0.0f)
 	{
@@ -44,33 +44,39 @@ void Car::stabilize()
 		else
 			turn = 0.0f;
 	}
+
+	//turn = 0.0f;
+
+	if(speed > 0.0f) {
+		//speed -= 0.1f;
+	}
 }
 	
 void Car::accel()
 {
 	float rate = 0.5f;
 	
-	if (speed < 50.0f - rate)
-		speed = speed + 0.5f;
+	if (speed < 1.0f - rate)
+		speed = speed + 0.01f;
 	else
-		speed = 50.0f;
+		speed = 1.0f;
 }
 
 void Car::slow()
 {
-	float rate = 2.0f;
+	float rate = 0.05f;
 	
 	if (speed > rate)
-		speed = speed - 2.0f;
+		speed = speed - rate;
 	else
 		speed = 0.0f;
 }
 
 void Car::update()
 {
-	float turnRad = turn * M_PI / (180.0f * 5.0f);
+	float turnRad = turn * M_PI / (180.0f * 1.0f);
 	
-	dir = dir + turn / 5.0f;
+	dir = dir + turn / 1.0f;
 
 	float dirRad = dir * M_PI / 180.0f;
 
@@ -78,6 +84,7 @@ void Car::update()
 
 	x = x + r*cos(dirRad);
 	y = y + r*sin(dirRad);
+	turn = 0.0f;
 }
 
 /* Segment */
@@ -137,8 +144,8 @@ void Track::update(float posX, float posY, float faceDir, int segmentType, float
 
 Race::Race()
 {
-	vehicle = new Car;
-	map = new Track;
+	vehicle = new Car();
+	map = new Track();
 }
 
 Race::~Race()

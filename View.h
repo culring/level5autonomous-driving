@@ -22,6 +22,7 @@ class View {
 public:
 	View();
 	~View();
+	void addModel(Race *m);
     void initializeRace(std::vector<Segment> segments);
     void updateCar();
 	sf::RenderWindow* getWindow();

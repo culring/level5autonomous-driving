@@ -16,18 +16,19 @@ ViewCar::ViewCar(sf::RenderWindow *window) : m_window(window)
 	}
 	sprite.setTexture(texture);
 	auto vector = m_window->getSize();
-	sprite.setPosition((float)vector.x/2, (float)vector.y/2);
+	sprite.setOrigin(89.5, 153);
 	sprite.scale(0.2f, 0.2f);
-	sprite.rotate(120);
 }
 
 void ViewCar::updatePosition(float positionX, float positionY)
 {
     m_positionX = positionX;
     m_positionY = positionY;
+    sprite.setPosition(positionX, positionY);
 }
 
 void ViewCar::updateDirection(float direction){
+	sprite.setRotation(direction+90);
     m_direction = direction;
 }
 

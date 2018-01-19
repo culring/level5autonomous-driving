@@ -1,5 +1,8 @@
 #include <math.h>
 
+#ifndef LEVEL5AUTONOMOUS_DRIVING_MODEL_H
+#define LEVEL5AUTONOMOUS_DRIVING_MODEL_H
+
 #define TRACK_SIZE 16
 
 class Car
@@ -69,3 +72,5 @@ public:
 	float getCarSpeed();
 	float getCarTurn();
 };
+
+#endif //LEVEL5AUTONOMOUS_DRIVING_MODEL_H

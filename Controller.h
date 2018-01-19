@@ -5,22 +5,29 @@
  *      Author: matinho1706
  */
 
+#ifndef LEVEL5AUTONOMOUS_DRIVING_CONTROLLER_H
+#define LEVEL5AUTONOMOUS_DRIVING_CONTROLLER_H
+
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <SFML/Graphics.hpp>
 #include "View.h"
+#include "Model.h"
+#include <SFML/Window/Keyboard.hpp>
 
 class Controller {
 private:
-	//Model *model;
+	Race *model;
 	View *view;
 	sf::RenderWindow *window;
 public:
 	Controller();
-	//Controller(Model m, View v);
+	//Controller(Race *m, View *v);
 	~Controller();
 	void menu();
 	void playerMode();
 	void aiMode();
 };
+
+#endif //LEVEL5AUTONOMOUS_DRIVING_CONTROLLER_H
