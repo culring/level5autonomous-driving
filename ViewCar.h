@@ -13,7 +13,7 @@ class ViewCar {
 	sf::RenderWindow *m_window;
     // current car's position
     float m_positionX, m_positionY;
-    // current car's orientation
+    // current car's m_orientation
     float m_direction;
 	//sprite
 	sf::Sprite sprite;

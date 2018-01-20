@@ -27,8 +27,8 @@ enum Direction
 };
 
 class ViewTrack {
-	Orientation orientation = POSITIVE_X;
-	float previousX=640, previousY=360, previousDistance=-400;
+	Orientation m_orientation = POSITIVE_X;
+	sf::Vector2f m_currentPosition = {640, 480}; 
 
 	// variables useful in generating map
 	std::pair<int, int> m_coordinatesVector;
@@ -38,14 +38,20 @@ class ViewTrack {
 	sf::RenderWindow *m_window;
 	std::vector<sf::Sprite> m_sprites;
 
-	bool isOrientationHorizontal();
-	bool isOrientationVertical();
+	bool isOrientationHorizontal(Orientation orientation);
+	bool isOrientationVertical(Orientation orientation);
+	Orientation checkNextOrientationFromSegment(ViewSegmentType segment);
+	Orientation checkNextOrientationFromDirection(Direction direction);
+	ViewSegmentType getSegmentToLeft();
+	ViewSegmentType getSegmentToRight();
+	ViewSegmentType getSegmentStraight();
+	ViewSegmentType getSegmentToDirection(Direction direction);
+	void addSegment(ViewSegmentType segment);
+	std::pair<int, int> checkNextPosition(Direction direction);
 
 public:
 	ViewTrack(sf::RenderWindow *window);
-	std::pair<int, int> calculateNewPosition(Direction direction);
 	void updatePosition();
-    void addSegment(ViewSegmentType segment);
     void display();
 	void addSegmentLeft();
 	void addSegmentRight();

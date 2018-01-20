@@ -4,14 +4,124 @@
 
 #include "ViewTrack.h"
 
-bool ViewTrack::isOrientationHorizontal()
+bool ViewTrack::isOrientationHorizontal(Orientation orientation)
 {
 	return (orientation == NEGATIVE_X || orientation == POSITIVE_X) ? true : false;
 }
 
-bool ViewTrack::isOrientationVertical()
+bool ViewTrack::isOrientationVertical(Orientation orientation)
 {
 	return (orientation == NEGATIVE_Y || orientation == POSITIVE_Y) ? true : false;
+}
+
+Orientation ViewTrack::checkNextOrientationFromSegment(ViewSegmentType segment)
+{
+	if (m_orientation == POSITIVE_X || m_orientation == NEGATIVE_X) {
+		if (segment == BOTTOM_LEFT || segment == BOTTOM_RIGHT) {
+			return POSITIVE_Y;
+		}
+		else if (segment == TOP_LEFT || segment == TOP_RIGHT) {
+			return NEGATIVE_Y;
+		}
+	}
+	else {
+		if (segment == TOP_LEFT || segment == BOTTOM_LEFT) {
+			return POSITIVE_X;
+		}
+		else if (segment == TOP_RIGHT || segment == BOTTOM_RIGHT) {
+			return NEGATIVE_X;
+		}
+	}
+
+	return m_orientation;
+}
+
+Orientation ViewTrack::checkNextOrientationFromDirection(Direction direction)
+{
+	ViewSegmentType segment = getSegmentToDirection(direction);
+	return checkNextOrientationFromSegment(segment);
+
+	return m_orientation;
+}
+
+ViewSegmentType ViewTrack::getSegmentToLeft()
+{
+	if (m_orientation == POSITIVE_X)
+	{
+		return BOTTOM_RIGHT;
+	}
+	else if (m_orientation == NEGATIVE_X)
+	{
+		return TOP_LEFT;
+	}
+	else if (m_orientation == NEGATIVE_Y)
+	{
+		return BOTTOM_LEFT;
+	}
+	else if (m_orientation == POSITIVE_Y)
+	{
+		return TOP_RIGHT;
+	}
+	else
+	{
+		throw std::exception();
+	}
+}
+
+ViewSegmentType ViewTrack::getSegmentToRight()
+{
+	if (m_orientation == POSITIVE_X)
+	{
+		return TOP_RIGHT;
+	}
+	else if (m_orientation == NEGATIVE_X)
+	{
+		return BOTTOM_LEFT;
+	}
+	else if (m_orientation == NEGATIVE_Y)
+	{
+		return BOTTOM_RIGHT;
+	}
+	else if (m_orientation == POSITIVE_Y)
+	{
+		return TOP_LEFT;
+	}
+	else
+	{
+		throw std::exception();
+	}
+}
+
+ViewSegmentType ViewTrack::getSegmentStraight()
+{
+	if (m_orientation == POSITIVE_X || m_orientation == NEGATIVE_X)
+	{
+		return HORIZONTAL_STRAIGHT;
+	}
+	else
+	{
+		return VERTICAL_STRAIGHT;
+	}
+}
+
+ViewSegmentType ViewTrack::getSegmentToDirection(Direction direction)
+{
+	if(direction == LEFT)
+	{
+		return getSegmentToLeft();
+	}
+	else if(direction == RIGHT)
+	{
+		return getSegmentToRight();
+	}
+	else if(direction == STRAIGHT)
+	{
+		return getSegmentStraight();
+	}
+	else
+	{
+		throw std::exception();
+	}
 }
 
 ViewTrack::ViewTrack(sf::RenderWindow* window) : m_window(window)
@@ -23,19 +133,27 @@ ViewTrack::ViewTrack(sf::RenderWindow* window) : m_window(window)
 	for(int i = 0; i < 30; ++i)
 	{
 		int random = rand() % 3;
-//		auto newPosition = calculateNewPosition();
-//		
-//		if(segmentsInWorld.find(newPosition) != segmentsInWorld.end())
-//		{
-//			if(!((isOrientationVertical() && segmentsInWorld[newPosition] == HORIZONTAL_STRAIGHT) ||
-//				(isOrientationHorizontal() && segmentsInWorld[newPosition] == VERTICAL_STRAIGHT)))
-//			{
-//				--i;
-//				continue;
-//			}
-//		}
+//
+//		std::cout << "(x,y) = " << "(" << m_coordinatesVector.first << ", " << m_coordinatesVector.second << ")" << std::endl;
+//		auto nextCoordinates = checkNextPosition(LEFT);
+//		std::cout << isOrientationVertical(checkNextOrientationFromDirection(LEFT)) << ": (" << nextCoordinates.first << ", " << nextCoordinates.second << ")" << std::endl;
+//		nextCoordinates = checkNextPosition(STRAIGHT);
+//		std::cout << isOrientationVertical(checkNextOrientationFromDirection(STRAIGHT)) << ": (" << nextCoordinates.first << ", " << nextCoordinates.second << ")" << std::endl;
+//		nextCoordinates = checkNextPosition(RIGHT);
+//		std::cout << isOrientationVertical(checkNextOrientationFromDirection(RIGHT)) << ": (" << nextCoordinates.first << ", " << nextCoordinates.second << ")" << std::endl;
 
-		updatePosition();
+		auto nextOrientation = checkNextOrientationFromDirection((Direction)random);
+		auto nextCoordinates = checkNextPosition((Direction)random);
+		if (segmentsInWorld.find(nextCoordinates) != segmentsInWorld.end())
+		{
+			if (!((isOrientationVertical(nextOrientation) && segmentsInWorld[nextCoordinates] == HORIZONTAL_STRAIGHT) ||
+				(isOrientationHorizontal(nextOrientation) && segmentsInWorld[nextCoordinates] == VERTICAL_STRAIGHT)))
+			{
+				--i;
+				continue;
+			}
+		}
+
 		switch(random)
 		{
 		case 0:
@@ -50,13 +168,19 @@ ViewTrack::ViewTrack(sf::RenderWindow* window) : m_window(window)
 		default:
 			throw std::exception();
 		}
+
+		m_coordinatesVector = nextCoordinates;
+//		std::cout << "(x,y) = " << "(" << m_coordinatesVector.first << ", " << m_coordinatesVector.second << ")" << std::endl;
+//		getchar();
 	}
 }
 
-std::pair<int, int> ViewTrack::calculateNewPosition(Direction direction)
+std::pair<int, int> ViewTrack::checkNextPosition(Direction direction)
 {
 	int coordinateX = m_coordinatesVector.first, 
 		coordinateY = m_coordinatesVector.second;
+
+	Orientation orientation = checkNextOrientationFromDirection(direction);
 
 	if (orientation == NEGATIVE_X)
 	{
@@ -80,7 +204,7 @@ std::pair<int, int> ViewTrack::calculateNewPosition(Direction direction)
 
 void ViewTrack::updatePosition()
 {
-//	m_coordinatesVector = calculateNewPosition();
+//	m_coordinatesVector = checkNextPosition();
 }
 
 void ViewTrack::addSegment(ViewSegmentType segment){
@@ -90,33 +214,32 @@ void ViewTrack::addSegment(ViewSegmentType segment){
     sf::Sprite &sprite = m_sprites.back();
     float distance = ViewSegment::getDistanceToBorder(segment);
 
-    if(orientation == POSITIVE_X) {
-		sprite.setPosition(previousX+distance+previousDistance, previousY);
-	} else if(orientation == NEGATIVE_X) {
-		sprite.setPosition(previousX-distance-previousDistance, previousY);
-	} else if(orientation == POSITIVE_Y) {
-		sprite.setPosition(previousX, previousY-distance-previousDistance);
-	} else if(orientation == NEGATIVE_Y){
-		sprite.setPosition(previousX, previousY+distance+previousDistance);
+	if (m_orientation == POSITIVE_X) {
+		m_currentPosition.x += distance;
 	}
-
-    if(orientation == POSITIVE_X || orientation == NEGATIVE_X) {
-    	if(segment == BOTTOM_LEFT || segment == BOTTOM_RIGHT) {
-    		orientation = POSITIVE_Y;
-    	} else if(segment == TOP_LEFT || segment == TOP_RIGHT) {
-    		orientation = NEGATIVE_Y;
-    	}
-    } else {
-    	if(segment == TOP_LEFT || segment == BOTTOM_LEFT) {
-    		orientation = POSITIVE_X;
-    	} else if(segment == TOP_RIGHT || segment == BOTTOM_RIGHT) {
-    		orientation = NEGATIVE_X;
-    	}
-    }
-
-    previousDistance = distance;
-    previousX = sprite.getPosition().x;
-    previousY = sprite.getPosition().y;
+	else if (m_orientation == NEGATIVE_X) {
+		m_currentPosition.x -= distance;
+	}
+	else if (m_orientation == POSITIVE_Y) {
+		m_currentPosition.y -= distance;
+	}
+	else if (m_orientation == NEGATIVE_Y) {
+		m_currentPosition.y += distance;
+	}
+	sprite.setPosition(m_currentPosition);
+	m_orientation = checkNextOrientationFromSegment(segment);
+	if (m_orientation == POSITIVE_X) {
+		m_currentPosition.x += distance;
+	}
+	else if (m_orientation == NEGATIVE_X) {
+		m_currentPosition.x -= distance;
+	}
+	else if (m_orientation == POSITIVE_Y) {
+		m_currentPosition.y -= distance;
+	}
+	else if (m_orientation == NEGATIVE_Y) {
+		m_currentPosition.y += distance;
+	}
 
 	segmentsInWorld[m_coordinatesVector] = segment;
 }
@@ -129,60 +252,15 @@ void ViewTrack::display() {
 
 void ViewTrack::addSegmentLeft()
 {
-	if(orientation == POSITIVE_X)
-	{
-		addSegment(BOTTOM_RIGHT);
-	}
-	else if(orientation == NEGATIVE_X)
-	{
-		addSegment(TOP_LEFT);
-	}
-	else if(orientation == NEGATIVE_Y)
-	{
-		addSegment(BOTTOM_LEFT);
-	}
-	else if(orientation == POSITIVE_Y)
-	{
-		addSegment(TOP_RIGHT);
-	}
-	else
-	{
-		throw std::exception();
-	}
+	addSegment(getSegmentToLeft());
 }
 
 void ViewTrack::addSegmentRight()
 {
-	if (orientation == POSITIVE_X)
-	{
-		addSegment(TOP_RIGHT);
-	}
-	else if (orientation == NEGATIVE_X)
-	{
-		addSegment(BOTTOM_LEFT);
-	}
-	else if (orientation == NEGATIVE_Y)
-	{
-		addSegment(BOTTOM_RIGHT);
-	}
-	else if (orientation == POSITIVE_Y)
-	{
-		addSegment(TOP_LEFT);
-	}
-	else
-	{
-		throw std::exception();
-	}
+	addSegment(getSegmentToRight());
 }
 
 void ViewTrack::addSegmentStraight()
 {
-	if(orientation == POSITIVE_X || orientation == NEGATIVE_X)
-	{
-		addSegment(HORIZONTAL_STRAIGHT);
-	}
-	else
-	{
-		addSegment(VERTICAL_STRAIGHT);
-	}
+	addSegment(getSegmentStraight());
 }
