@@ -51,16 +51,16 @@ ViewTrack::ViewTrack(sf::RenderWindow* window) : m_window(window)
 			addSegmentStraight();
 
 			// if straight lines overlap
-//			if((isOrientationHorizontal() && segmentsInWorld[newPosition] == VERTICAL_STRAIGHT) ||
-//				(isOrientationVertical() && segmentsInWorld[newPosition] == HORIZONTAL_STRAIGHT) ||
-//				segmentsInWorld.find(newPosition) == segmentsInWorld.end())
-//			{
-//				addSegmentStraight();
-//			}
-//			else
-//			{
-//				isAdded = false;
-//			}
+			if((isOrientationHorizontal() && segmentsInWorld[newPosition] == VERTICAL_STRAIGHT) ||
+				(isOrientationVertical() && segmentsInWorld[newPosition] == HORIZONTAL_STRAIGHT) ||
+				segmentsInWorld.find(newPosition) == segmentsInWorld.end())
+			{
+				addSegmentStraight();
+			}
+			else
+			{
+				isAdded = false;
+			}
 			break;
 		case 2:
 			addSegmentRight();
