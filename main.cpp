@@ -13,6 +13,7 @@ int main(void) {
 	//view.addmodel(model);
 	//Controller c(model, view);
 	controller.menu();
-
+	std::cout << "end main" << std::endl;
+	controller.~Controller();
 	return 0;
 }

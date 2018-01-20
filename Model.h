@@ -71,6 +71,8 @@ public:
 	
 	Segment* getMap();
 	
+	void playerMode();
+	void endGame();
 	float getCarX();
 	float getCarY();
 	float getCarDir();

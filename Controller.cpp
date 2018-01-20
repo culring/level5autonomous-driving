@@ -17,51 +17,43 @@ Controller::Controller() {
 	window->setFramerateLimit(60);
 }
 
-
-/*Controller::Controller(Race *m, View *v) {
-	this->model = m;
-	this->view = v;
-	this->window = v->getWindow();
-}*/
-
-
 Controller::~Controller() {
-	this->window->~RenderWindow();
+	delete model;
 	delete view;
 }
 
 void Controller::menu() {
 	sf::Event event;
 	std::cout << "menu" << std::endl;
+	this->view->displayMenu();
+	//this->view->menu();
+	//this->model->menu();
 
 	while(this->window->isOpen()) {
-		while(this->window->pollEvent(event)) {
-			if(event.type == sf::Event::EventType::KeyPressed) {
-				if(sf::Keyboard::Key::Num1 == event.key.code) {
-					// e.g. start player mode
-					//this->view.initPlayerMode();
-					//this->model.initPlayerMode();
-					std::cout << "init playerMode" << std::endl;
-					playerMode();
-				} else if(sf::Keyboard::Key::Num2 == event.key.code) {
-					std::cout << "init aiMode" << std::endl;
-					aiMode();
-				}
-			} else if (event.type == sf::Event::EventType::Closed) {
-				std::cout << "Closing..." << std::endl;
-				this->window->close();
-			}
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num1)) {
+			this->model->playerMode();
+			this->view->playerMode();
+			std::cout << "init playerMode" << std::endl;
+			playerMode();
+			view->resetView();
+		} else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num2)) {
+			std::cout << "init aiMode" << std::endl;
+			aiMode();
+		}
 
-			this->window->clear();
-			this->view->display();
-			this->window->display();
+		//this->window->clear();
+		this->view->displayMenu();
+		this->window->display();
+
+		if (this->window->pollEvent(event) && event.type == sf::Event::EventType::Closed) {
+			std::cout << "Closing..." << std::endl;
+			this->window->close();
 		}
 	}
 }
 
 void Controller::playerMode() {
 	sf::Event event;
-	bool end = false;
 	std::cout << "playerMode" << std::endl;
 
 	while(this->window->isOpen()) {
@@ -86,7 +78,9 @@ void Controller::playerMode() {
 		} else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
 			model->vehicle->slow();
 		} else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-			end=true;
+			view->endGame();
+			model->endGame();
+			break;
 		}
 
 		this->model->vehicle->update();
@@ -95,11 +89,9 @@ void Controller::playerMode() {
 		this->view->display();
 		this->window->display();
 
-		if(end == true) break;
-
-//		if(event.type == sf::Event::EventType::Closed) {
-//			this->window->close();
-//		}
+		if(this->window->pollEvent(event) && event.type == sf::Event::EventType::Closed) {
+			this->window->close();
+		}
 	}
 }
 
