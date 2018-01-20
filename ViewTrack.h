@@ -40,6 +40,7 @@ class ViewTrack {
 
 	bool isOrientationHorizontal(Orientation orientation);
 	bool isOrientationVertical(Orientation orientation);
+	bool areSegmentsOpposite(ViewSegmentType segmentA, ViewSegmentType segmentB);
 	Orientation checkNextOrientationFromSegment(ViewSegmentType segment);
 	Orientation checkNextOrientationFromDirection(Direction direction);
 	ViewSegmentType getSegmentToLeft();

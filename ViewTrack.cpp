@@ -14,6 +14,26 @@ bool ViewTrack::isOrientationVertical(Orientation orientation)
 	return (orientation == NEGATIVE_Y || orientation == POSITIVE_Y) ? true : false;
 }
 
+bool ViewTrack::areSegmentsOpposite(ViewSegmentType segmentA, ViewSegmentType segmentB)
+{
+	if(segmentA == TOP_LEFT)
+	{
+		return (segmentB == BOTTOM_RIGHT) ? true : false;
+	}
+	else if(segmentA == BOTTOM_RIGHT)
+	{
+		return (segmentB == TOP_LEFT) ? true : false;
+	}
+	else if(segmentA == TOP_RIGHT)
+	{
+		return (segmentB == BOTTOM_LEFT) ? true : false;
+	}
+	else if(segmentA == BOTTOM_LEFT)
+	{
+		return (segmentB == TOP_RIGHT) ? true : false;
+	}
+}
+
 Orientation ViewTrack::checkNextOrientationFromSegment(ViewSegmentType segment)
 {
 	if (m_orientation == POSITIVE_X || m_orientation == NEGATIVE_X) {
@@ -130,7 +150,7 @@ ViewTrack::ViewTrack(sf::RenderWindow* window) : m_window(window)
 
 	// generate track
 	srand(time(nullptr));
-	for(int i = 0; i < 30; ++i)
+	for(int i = 0, j = 0; i < 1000; ++i)
 	{
 		int random = rand() % 3;
 //
@@ -142,17 +162,39 @@ ViewTrack::ViewTrack(sf::RenderWindow* window) : m_window(window)
 //		nextCoordinates = checkNextPosition(RIGHT);
 //		std::cout << isOrientationVertical(checkNextOrientationFromDirection(RIGHT)) << ": (" << nextCoordinates.first << ", " << nextCoordinates.second << ")" << std::endl;
 
+		if (j == 10)
+		{
+			std::cout << "Number of generated segments: " << i+1 << std::endl;
+			break;
+		}
+
 		auto nextOrientation = checkNextOrientationFromDirection((Direction)random);
 		auto nextCoordinates = checkNextPosition((Direction)random);
+		auto segmentLeft = getSegmentToLeft(),
+			segmentRight = getSegmentToRight();
 		if (segmentsInWorld.find(nextCoordinates) != segmentsInWorld.end())
 		{
-			if (!((isOrientationVertical(nextOrientation) && segmentsInWorld[nextCoordinates] == HORIZONTAL_STRAIGHT) ||
-				(isOrientationHorizontal(nextOrientation) && segmentsInWorld[nextCoordinates] == VERTICAL_STRAIGHT)))
+//			auto nextSegmentInWorld = segmentsInWorld[nextCoordinates];
+//			if (!((isOrientationVertical(nextOrientation) && nextSegmentInWorld == HORIZONTAL_STRAIGHT) ||
+//				(isOrientationHorizontal(nextOrientation) && nextSegmentInWorld == VERTICAL_STRAIGHT) ||
+//				areSegmentsOpposite(segmentLeft, nextSegmentInWorld) ||
+//				areSegmentsOpposite(segmentRight, nextSegmentInWorld)))
+//			{
+
+			auto nextSegmentInWorld = segmentsInWorld[nextCoordinates];
+			if (!((isOrientationVertical(nextOrientation) && nextSegmentInWorld == HORIZONTAL_STRAIGHT) ||
+				(isOrientationHorizontal(nextOrientation) && nextSegmentInWorld == VERTICAL_STRAIGHT)))
 			{
+
 				--i;
+				++j;
 				continue;
 			}
 		}
+
+		j = 0;
+
+//		std::cout << i << std::endl;
 
 		switch(random)
 		{
