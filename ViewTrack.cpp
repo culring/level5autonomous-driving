@@ -17,80 +17,43 @@ bool ViewTrack::isOrientationVertical()
 ViewTrack::ViewTrack(sf::RenderWindow* window) : m_window(window)
 {
 	ViewSegment::init();
-//	addSegment(HORIZONTAL_STRAIGHT);
-//	addSegment(TOP_RIGHT);
-//	addSegment(BOTTOM_RIGHT);
-//	addSegment(BOTTOM_LEFT);
-//	addSegment(VERTICAL_STRAIGHT);
-//	addSegment(TOP_LEFT);
-//	addSegment(HORIZONTAL_STRAIGHT);
-//	addSegment(HORIZONTAL_STRAIGHT);
 
 	// generate track
 	srand(time(nullptr));
 	for(int i = 0; i < 30; ++i)
 	{
 		int random = rand() % 3;
-		auto newPosition = calculateNewPosition();
-		bool isAdded = true;
+//		auto newPosition = calculateNewPosition();
+//		
+//		if(segmentsInWorld.find(newPosition) != segmentsInWorld.end())
+//		{
+//			if(!((isOrientationVertical() && segmentsInWorld[newPosition] == HORIZONTAL_STRAIGHT) ||
+//				(isOrientationHorizontal() && segmentsInWorld[newPosition] == VERTICAL_STRAIGHT)))
+//			{
+//				--i;
+//				continue;
+//			}
+//		}
+
+		updatePosition();
 		switch(random)
 		{
 		case 0:
 			addSegmentLeft();
-
-//			if(segmentsInWorld.find(newPosition) == segmentsInWorld.end())
-//			{
-//				addSegmentLeft();
-//			}
-//			else
-//			{
-//				isAdded = false;
-//			}
 			break;
 		case 1:
 			addSegmentStraight();
-
-			// if straight lines overlap
-			if((isOrientationHorizontal() && segmentsInWorld[newPosition] == VERTICAL_STRAIGHT) ||
-				(isOrientationVertical() && segmentsInWorld[newPosition] == HORIZONTAL_STRAIGHT) ||
-				segmentsInWorld.find(newPosition) == segmentsInWorld.end())
-			{
-				addSegmentStraight();
-			}
-			else
-			{
-				isAdded = false;
-			}
 			break;
 		case 2:
 			addSegmentRight();
-
-//			if (segmentsInWorld.find(newPosition) == segmentsInWorld.end()) {
-//				addSegmentRight();
-//			}
-//			else
-//			{
-//				isAdded = false;
-//			}
 			break;
 		default:
 			throw std::exception();
 		}
-		if(isAdded)
-		{
-//			std::cout << random << std::endl;
-//			std::cout << newPosition.first << " " << newPosition.second << std::endl;
-			updatePosition();
-		}
-		else
-		{
-			// repeat iteration
-			--i;
-		}
 	}
 }
 
-std::pair<int, int> ViewTrack::calculateNewPosition()
+std::pair<int, int> ViewTrack::calculateNewPosition(Direction direction)
 {
 	int coordinateX = m_coordinatesVector.first, 
 		coordinateY = m_coordinatesVector.second;
@@ -117,7 +80,7 @@ std::pair<int, int> ViewTrack::calculateNewPosition()
 
 void ViewTrack::updatePosition()
 {
-	m_coordinatesVector = calculateNewPosition();
+//	m_coordinatesVector = calculateNewPosition();
 }
 
 void ViewTrack::addSegment(ViewSegmentType segment){

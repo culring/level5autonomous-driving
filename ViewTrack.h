@@ -19,6 +19,13 @@ enum Orientation {
 	NEGATIVE_Y
 };
 
+enum Direction
+{
+	LEFT,
+	STRAIGHT,
+	RIGHT
+};
+
 class ViewTrack {
 	Orientation orientation = POSITIVE_X;
 	float previousX=640, previousY=360, previousDistance=-400;
@@ -36,7 +43,7 @@ class ViewTrack {
 
 public:
 	ViewTrack(sf::RenderWindow *window);
-	std::pair<int, int> calculateNewPosition();
+	std::pair<int, int> calculateNewPosition(Direction direction);
 	void updatePosition();
     void addSegment(ViewSegmentType segment);
     void display();
