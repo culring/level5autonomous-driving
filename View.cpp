@@ -10,6 +10,11 @@ View::View() :
 {
 	m_viewCar = new ViewCar(m_window);
 	m_viewTrack = new ViewTrack(m_window);
+
+	sf::View view = m_window->getDefaultView();
+	view.zoom(2.5f);
+	view.setCenter(0, 0);
+	m_window->setView(view);
 }
 
 View::~View()

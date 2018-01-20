@@ -16,14 +16,18 @@ Car::~Car() {}
 
 void Car::turnLeft()
 {
+//	if (turn >= -30.0f)
+//		turn = turn - 0.2f;
 	if (turn >= -30.0f)
-		turn = turn - 0.2f;
+		turn = turn - 1.0f;
 }
 
 void Car::turnRight()
 {
+//	if (turn <= 30.0f)
+//		turn = turn + 0.2f;	
 	if (turn <= 30.0f)
-		turn = turn + 0.2f;
+		turn = turn + 1.0f;
 }
 
 void Car::stabilize()
@@ -56,10 +60,10 @@ void Car::accel()
 {
 	float rate = 0.5f;
 	
-	if (speed < 1.0f - rate)
-		speed = speed + 0.01f;
+	if (speed < 5.0f - rate)
+		speed = speed + 0.1f;
 	else
-		speed = 1.0f;
+		speed = 5.0f;
 }
 
 void Car::slow()

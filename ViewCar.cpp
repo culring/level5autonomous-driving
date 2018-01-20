@@ -25,6 +25,10 @@ void ViewCar::updatePosition(float positionX, float positionY)
     m_positionX = positionX;
     m_positionY = positionY;
     sprite.setPosition(positionX, positionY);
+
+	sf::View view = m_window->getView();
+	view.setCenter(positionX, positionY);
+	m_window->setView(view);
 }
 
 void ViewCar::updateDirection(float direction){

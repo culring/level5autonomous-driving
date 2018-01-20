@@ -15,7 +15,6 @@ class View {
     // view variables
     ViewCar *m_viewCar;
     ViewTrack *m_viewTrack;
-    // model
     Race *m_model;
 	sf::RenderWindow *m_window;
 

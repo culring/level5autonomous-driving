@@ -77,8 +77,8 @@ public:
 			default:
 				throw std::exception();
 		}
-
 		sprite.scale(scale, scale);
+
 		return sprite;
 	}
 

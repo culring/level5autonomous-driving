@@ -13,6 +13,8 @@ Controller::Controller() {
 	this->view = new View();
 	this->view->addModel(model);
 	this->window = view->getWindow();
+
+	window->setFramerateLimit(60);
 }
 
 
@@ -63,45 +65,41 @@ void Controller::playerMode() {
 	std::cout << "playerMode" << std::endl;
 
 	while(this->window->isOpen()) {
-		while(1) {
-			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-				model->vehicle->turnLeft();
-				model->vehicle->accel();
-			} else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-				model->vehicle->turnRight();
-				model->vehicle->accel();
-			} else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-				model->vehicle->turnLeft();
-				model->vehicle->slow();
-			} else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-				model->vehicle->turnRight();
-				model->vehicle->slow();
-			} else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-				model->vehicle->turnLeft();
-			} else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-				model->vehicle->turnRight();
-			} else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-				model->vehicle->accel();
-			} else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-				model->vehicle->slow();
-			} else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-				end=true;
-			}
-
-			this->model->vehicle->update();
-			this->view->updateCar();
-			this->window->clear();
-			this->view->display();
-			this->window->display();
-
-			if(end == true) break;
-
-			if(event.type == sf::Event::EventType::Closed) {
-				this->window->close();
-			}
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+			model->vehicle->turnLeft();
+			model->vehicle->accel();
+		} else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+			model->vehicle->turnRight();
+			model->vehicle->accel();
+		} else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+			model->vehicle->turnLeft();
+			model->vehicle->slow();
+		} else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+			model->vehicle->turnRight();
+			model->vehicle->slow();
+		} else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+			model->vehicle->turnLeft();
+		} else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+			model->vehicle->turnRight();
+		} else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+			model->vehicle->accel();
+		} else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+			model->vehicle->slow();
+		} else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+			end=true;
 		}
 
+		this->model->vehicle->update();
+		this->view->updateCar();
+		this->window->clear();
+		this->view->display();
+		this->window->display();
+
 		if(end == true) break;
+
+//		if(event.type == sf::Event::EventType::Closed) {
+//			this->window->close();
+//		}
 	}
 }
 
