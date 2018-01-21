@@ -14,6 +14,5 @@ int main(void) {
 	//Controller c(model, view);
 	controller.menu();
 	std::cout << "end main" << std::endl;
-	controller.~Controller();
 	return 0;
 }

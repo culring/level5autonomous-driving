@@ -35,9 +35,8 @@ sf::RenderWindow* View::getWindow()
 void View::playerMode() {
 	m_viewCar = new ViewCar(m_window);
 	m_viewTrack = new ViewTrack(m_window);
-  m_viewCar->updatePosition(m_viewTrack->getPositionOfFirstSegment().x,
-	  m_viewTrack->getPositionOfFirstSegment().y);
-  sf::View view = m_window->getDefaultView();
+	m_viewCar->updatePosition(m_viewTrack->getPositionOfFirstSegment().x,  m_viewTrack->getPositionOfFirstSegment().y);
+	sf::View view = m_window->getDefaultView();
 	view.zoom(2.5f);
 //	view.zoom(1.5f);
 	view.setCenter(m_viewCar->getPosition().x, m_viewCar->getPosition().y);
