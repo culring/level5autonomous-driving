@@ -152,8 +152,8 @@ ViewTrack::ViewTrack(sf::RenderWindow* window) : m_window(window)
 	srand(time(nullptr));
 	for(int i = 0, j = 0; i < 1000; ++i)
 	{
-		int random = rand() % 4;
-		if (random == 3) random = 1;
+		int random = rand() % 5;
+		if (random >= 3) random = 1;
 //
 //		std::cout << "(x,y) = " << "(" << m_coordinatesVector.first << ", " << m_coordinatesVector.second << ")" << std::endl;
 //		auto nextCoordinates = getNextCoordinates(LEFT);
@@ -212,6 +212,7 @@ ViewTrack::ViewTrack(sf::RenderWindow* window) : m_window(window)
 			throw std::exception();
 		}
 
+		dirVector.push_back(random);
 		m_coordinatesVector = nextCoordinates;
 //		std::cout << "(x,y) = " << "(" << m_coordinatesVector.first << ", " << m_coordinatesVector.second << ")" << std::endl;
 //		getchar();
@@ -311,4 +312,18 @@ void ViewTrack::addSegmentStraight()
 sf::Vector2f ViewTrack::getPositionOfFirstSegment()
 {
 	return m_sprites[0].getPosition();
+}
+
+std::vector<sf::Vector2i> ViewTrack::getSegmentsPosition() {
+	std::vector<sf::Vector2i> positions;
+
+	for(auto seg : m_sprites) {
+		positions.push_back((sf::Vector2i)seg.getPosition());
+	}
+
+	return positions;
+}
+
+std::vector<int> ViewTrack::getDirVector() {
+	return dirVector;
 }

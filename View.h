@@ -31,9 +31,9 @@ public:
     void initializeRace(std::vector<Segment> segments);
     void updateCar();
 	sf::RenderWindow* getWindow();
+	ViewTrack *getTrack();
 	void menu();
-	void playerMode();
-	void aiMode();
+	void gameMode();
 	void endGame();
 	void displayMenu();
 	void display();

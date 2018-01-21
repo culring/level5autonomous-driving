@@ -28,7 +28,7 @@ enum Direction
 
 class ViewTrack {
 	Orientation m_orientation = POSITIVE_X;
-	sf::Vector2f m_currentPosition = {640, 480}; 
+	sf::Vector2f m_currentPosition = {-50, 0};
 
 	// variables useful in generating map
 	std::pair<int, int> m_coordinatesVector;
@@ -37,6 +37,7 @@ class ViewTrack {
     std::vector<ViewSegmentType> m_segments;
 	sf::RenderWindow *m_window;
 	std::vector<sf::Sprite> m_sprites;
+	std::vector<int> dirVector;
 
 	bool isOrientationHorizontal(Orientation orientation);
 	bool isOrientationVertical(Orientation orientation);
@@ -58,6 +59,8 @@ public:
 	void addSegmentRight();
 	void addSegmentStraight();
 	sf::Vector2f getPositionOfFirstSegment();
+	std::vector<sf::Vector2i> getSegmentsPosition();
+	std::vector<int> getDirVector();
 };
 
 #endif //LEVEL5AUTONOMOUS_DRIVING_TRACK_H

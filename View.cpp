@@ -32,7 +32,11 @@ sf::RenderWindow* View::getWindow()
 	return m_window;
 }
 
-void View::playerMode() {
+ViewTrack *View::getTrack() {
+	return m_viewTrack;
+}
+
+void View::gameMode() {
 	m_viewCar = new ViewCar(m_window);
 	m_viewTrack = new ViewTrack(m_window);
 	m_viewCar->updatePosition(m_viewTrack->getPositionOfFirstSegment().x,  m_viewTrack->getPositionOfFirstSegment().y);
@@ -41,10 +45,6 @@ void View::playerMode() {
 //	view.zoom(1.5f);
 	view.setCenter(m_viewCar->getPosition().x, m_viewCar->getPosition().y);
 	m_window->setView(view);
-}
-
-void View::aiMode() {
-
 }
 
 void View::endGame() {

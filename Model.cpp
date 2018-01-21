@@ -159,6 +159,12 @@ void Race::playerMode() {
 	map = new Track();
 }
 
+void Race::aiMode(std::vector<sf::Vector2i> segs, std::vector<int> dirs) {
+	vehicle = new Car();
+	map = new Track();
+	fuzzySet = new Fuzzy();
+}
+
 void Race::endGame() {
 	delete vehicle;
 	delete map;

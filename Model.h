@@ -8,6 +8,10 @@
 #ifndef LEVEL5AUTONOMOUS_DRIVING_MODEL_H
 #define LEVEL5AUTONOMOUS_DRIVING_MODEL_H
 
+#include <vector>
+#include "fuzzy.h"
+#include <SFML/System/Vector2.hpp>
+
 #define TRACK_SIZE 16
 
 class Car
@@ -50,6 +54,7 @@ public:
 class Track
 {
 public:
+	//std::vector<sf>
 	Segment *segList;			// current track
 	int k;
 	
@@ -65,13 +70,14 @@ class Race
 public:
 	Car *vehicle;
 	Track *map;
-	
+	Fuzzy *fuzzySet;
 	Race();
 	~Race();
 	
 	Segment* getMap();
 	
 	void playerMode();
+	void aiMode(std::vector<sf::Vector2i> segs, std::vector<int> dirs);
 	void endGame();
 	float getCarX();
 	float getCarY();

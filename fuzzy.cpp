@@ -1,3 +1,5 @@
+#include "fuzzy.h"
+
 Fuzzy::Fuzzy()
 {
 	left = 0.0f;
@@ -5,6 +7,16 @@ Fuzzy::Fuzzy()
 	midRight = 0.0f;
 	right = 0.0f;
 };
+
+Fuzzy::Fuzzy(std::vector<sf::Vector2i> segs, std::vector<int> dirs) {
+	left = 0.0f;
+	midLeft = 0.0f;
+	midRight = 0.0f;
+	right = 0.0f;
+	segmentsPositions = segs;
+	directions = dirs;
+}
+
 Fuzzy::~Fuzzy(){};
 
 void Fuzzy::setInterval(float l, float ml, float mr, float r)
@@ -43,12 +55,12 @@ float turnValue;
 float rate = 5.0f;	// idk
 Fuzzy fuzzySet;
 
-fuzzySet.setInterval(-50.0f, 0.0f, 0.0f, 50.0f);
+//fuzzySet.setInterval(-50.0f, 0.0f, 0.0f, 50.0f);
 
 // in while
 
 // dist = segMid - vehiclePos
-turnValue = fuzzySet.getValue(dist) * rate;
+//turnValue = fuzzySet.getValue(dist) * rate;
 /*
   if((dist < 0.0f) && (vehicle.turn < turnValue))
   	  vehicle.turnRight; 	// or left idk

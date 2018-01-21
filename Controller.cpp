@@ -32,13 +32,18 @@ void Controller::menu() {
 	while(this->window->isOpen()) {
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num1)) {
 			this->model->playerMode();
-			this->view->playerMode();
+			this->view->gameMode();
 			std::cout << "init playerMode" << std::endl;
 			playerMode();
 			view->resetView();
 		} else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num2)) {
+			view->gameMode();
+			std::vector<sf::Vector2i> positions = view->getTrack()->getSegmentsPosition();
+			std::vector<int> directions = view ->getTrack()->getDirVector();
+			model->aiMode(positions, directions);
 			std::cout << "init aiMode" << std::endl;
 			aiMode();
+			view->resetView();
 		}
 
 		//this->window->clear();
