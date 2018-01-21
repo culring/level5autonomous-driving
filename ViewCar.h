@@ -27,6 +27,7 @@ public:
     void updatePosition(float positionX, float positionY);
     void updateDirection(float direction);
 	void display();
+	sf::Vector2f getPosition();
 };
 
 #endif //LEVEL5AUTONOMOUS_DRIVING_CAR_H

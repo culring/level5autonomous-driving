@@ -6,6 +6,7 @@
 #include "Textures.h"
 #include <SFML/Graphics/Sprite.hpp>
 #include <iostream>
+#include "ViewSegment.h"
 
 ViewCar::ViewCar(sf::RenderWindow *window) : m_window(window), m_positionX(0), m_positionY(0), m_direction(0)
 {
@@ -39,4 +40,9 @@ void ViewCar::updateDirection(float direction){
 void ViewCar::display()
 {
 	m_window->draw(sprite);
+}
+
+sf::Vector2f ViewCar::getPosition()
+{
+	return{ m_positionX, m_positionY };
 }
