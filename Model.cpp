@@ -5,7 +5,7 @@
 Car::Car()
 {
 	x = 0.0f;
-	y = 600.0f;
+	y = 0.0f;
 	dir = 0.0f;
 	
 	speed = 0.0f;
@@ -146,14 +146,20 @@ void Track::update(float posX, float posY, float faceDir, int segmentType, float
 
 /* Race */
 
-Race::Race()
+Race::Race() : map(nullptr), vehicle(nullptr) {}
+
+Race::~Race()
 {
+	delete vehicle;
+	delete map;
+}
+
+void Race::playerMode() {
 	vehicle = new Car();
 	map = new Track();
 }
 
-Race::~Race()
-{
+void Race::endGame() {
 	delete vehicle;
 	delete map;
 }

@@ -8,15 +8,15 @@
 #include <iostream>
 #include "ViewSegment.h"
 
-ViewCar::ViewCar(sf::RenderWindow *window) : m_window(window)
+ViewCar::ViewCar(sf::RenderWindow *window) : m_window(window), m_positionX(0), m_positionY(0), m_direction(0)
 {
 	//std::cout << GetCurrentWorkingDir() << std::endl;
 	if (!texture.loadFromFile(CAR_TEXTURES_DIRECTORY, CAR_RECTANGLE))
 	{
 		throw std::exception();
 	}
+
 	sprite.setTexture(texture);
-	auto vector = m_window->getSize();
 	sprite.setOrigin(89.5, 153);
 	sprite.scale(0.2f, 0.2f);
 }
