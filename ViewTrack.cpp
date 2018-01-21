@@ -34,7 +34,7 @@ bool ViewTrack::areSegmentsOpposite(ViewSegmentType segmentA, ViewSegmentType se
 	}
 }
 
-Orientation ViewTrack::checkNextOrientationFromSegment(ViewSegmentType segment)
+Orientation ViewTrack::getNextOrientationFromSegment(ViewSegmentType segment)
 {
 	if (m_orientation == POSITIVE_X || m_orientation == NEGATIVE_X) {
 		if (segment == BOTTOM_LEFT || segment == BOTTOM_RIGHT) {
@@ -56,10 +56,10 @@ Orientation ViewTrack::checkNextOrientationFromSegment(ViewSegmentType segment)
 	return m_orientation;
 }
 
-Orientation ViewTrack::checkNextOrientationFromDirection(Direction direction)
+Orientation ViewTrack::getNextOrientationFromDirection(Direction direction)
 {
-	ViewSegmentType segment = getSegmentToDirection(direction);
-	return checkNextOrientationFromSegment(segment);
+	ViewSegmentType segment = getSegmentFromDirection(direction);
+	return getNextOrientationFromSegment(segment);
 
 	return m_orientation;
 }
@@ -124,7 +124,7 @@ ViewSegmentType ViewTrack::getSegmentStraight()
 	}
 }
 
-ViewSegmentType ViewTrack::getSegmentToDirection(Direction direction)
+ViewSegmentType ViewTrack::getSegmentFromDirection(Direction direction)
 {
 	if(direction == LEFT)
 	{
@@ -152,15 +152,16 @@ ViewTrack::ViewTrack(sf::RenderWindow* window) : m_window(window)
 	srand(time(nullptr));
 	for(int i = 0, j = 0; i < 1000; ++i)
 	{
-		int random = rand() % 3;
+		int random = rand() % 4;
+		if (random == 3) random = 1;
 //
 //		std::cout << "(x,y) = " << "(" << m_coordinatesVector.first << ", " << m_coordinatesVector.second << ")" << std::endl;
-//		auto nextCoordinates = checkNextPosition(LEFT);
-//		std::cout << isOrientationVertical(checkNextOrientationFromDirection(LEFT)) << ": (" << nextCoordinates.first << ", " << nextCoordinates.second << ")" << std::endl;
-//		nextCoordinates = checkNextPosition(STRAIGHT);
-//		std::cout << isOrientationVertical(checkNextOrientationFromDirection(STRAIGHT)) << ": (" << nextCoordinates.first << ", " << nextCoordinates.second << ")" << std::endl;
-//		nextCoordinates = checkNextPosition(RIGHT);
-//		std::cout << isOrientationVertical(checkNextOrientationFromDirection(RIGHT)) << ": (" << nextCoordinates.first << ", " << nextCoordinates.second << ")" << std::endl;
+//		auto nextCoordinates = getNextCoordinates(LEFT);
+//		std::cout << isOrientationVertical(getNextOrientationFromDirection(LEFT)) << ": (" << nextCoordinates.first << ", " << nextCoordinates.second << ")" << std::endl;
+//		nextCoordinates = getNextCoordinates(STRAIGHT);
+//		std::cout << isOrientationVertical(getNextOrientationFromDirection(STRAIGHT)) << ": (" << nextCoordinates.first << ", " << nextCoordinates.second << ")" << std::endl;
+//		nextCoordinates = getNextCoordinates(RIGHT);
+//		std::cout << isOrientationVertical(getNextOrientationFromDirection(RIGHT)) << ": (" << nextCoordinates.first << ", " << nextCoordinates.second << ")" << std::endl;
 
 		if (j == 10)
 		{
@@ -168,8 +169,8 @@ ViewTrack::ViewTrack(sf::RenderWindow* window) : m_window(window)
 			break;
 		}
 
-		auto nextOrientation = checkNextOrientationFromDirection((Direction)random);
-		auto nextCoordinates = checkNextPosition((Direction)random);
+		auto nextOrientation = getNextOrientationFromDirection((Direction)random);
+		auto nextCoordinates = getNextCoordinates((Direction)random);
 		auto segmentLeft = getSegmentToLeft(),
 			segmentRight = getSegmentToRight();
 		if (segmentsInWorld.find(nextCoordinates) != segmentsInWorld.end())
@@ -217,12 +218,12 @@ ViewTrack::ViewTrack(sf::RenderWindow* window) : m_window(window)
 	}
 }
 
-std::pair<int, int> ViewTrack::checkNextPosition(Direction direction)
+std::pair<int, int> ViewTrack::getNextCoordinates(Direction direction)
 {
 	int coordinateX = m_coordinatesVector.first, 
 		coordinateY = m_coordinatesVector.second;
 
-	Orientation orientation = checkNextOrientationFromDirection(direction);
+	Orientation orientation = getNextOrientationFromDirection(direction);
 
 	if (orientation == NEGATIVE_X)
 	{
@@ -246,7 +247,7 @@ std::pair<int, int> ViewTrack::checkNextPosition(Direction direction)
 
 void ViewTrack::updatePosition()
 {
-//	m_coordinatesVector = checkNextPosition();
+//	m_coordinatesVector = getNextCoordinates();
 }
 
 void ViewTrack::addSegment(ViewSegmentType segment){
@@ -269,7 +270,7 @@ void ViewTrack::addSegment(ViewSegmentType segment){
 		m_currentPosition.y += distance;
 	}
 	sprite.setPosition(m_currentPosition);
-	m_orientation = checkNextOrientationFromSegment(segment);
+	m_orientation = getNextOrientationFromSegment(segment);
 	if (m_orientation == POSITIVE_X) {
 		m_currentPosition.x += distance;
 	}
@@ -305,4 +306,9 @@ void ViewTrack::addSegmentRight()
 void ViewTrack::addSegmentStraight()
 {
 	addSegment(getSegmentStraight());
+}
+
+sf::Vector2f ViewTrack::getPositionOfFirstSegment()
+{
+	return m_sprites[0].getPosition();
 }

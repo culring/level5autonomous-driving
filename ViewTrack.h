@@ -41,14 +41,14 @@ class ViewTrack {
 	bool isOrientationHorizontal(Orientation orientation);
 	bool isOrientationVertical(Orientation orientation);
 	bool areSegmentsOpposite(ViewSegmentType segmentA, ViewSegmentType segmentB);
-	Orientation checkNextOrientationFromSegment(ViewSegmentType segment);
-	Orientation checkNextOrientationFromDirection(Direction direction);
+	Orientation getNextOrientationFromSegment(ViewSegmentType segment);
+	Orientation getNextOrientationFromDirection(Direction direction);
 	ViewSegmentType getSegmentToLeft();
 	ViewSegmentType getSegmentToRight();
 	ViewSegmentType getSegmentStraight();
-	ViewSegmentType getSegmentToDirection(Direction direction);
+	ViewSegmentType getSegmentFromDirection(Direction direction);
 	void addSegment(ViewSegmentType segment);
-	std::pair<int, int> checkNextPosition(Direction direction);
+	std::pair<int, int> getNextCoordinates(Direction direction);
 
 public:
 	ViewTrack(sf::RenderWindow *window);
@@ -57,6 +57,7 @@ public:
 	void addSegmentLeft();
 	void addSegmentRight();
 	void addSegmentStraight();
+	sf::Vector2f getPositionOfFirstSegment();
 };
 
 #endif //LEVEL5AUTONOMOUS_DRIVING_TRACK_H
