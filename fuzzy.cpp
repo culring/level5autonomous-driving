@@ -8,14 +8,14 @@ Fuzzy::Fuzzy()
 	right = 0.0f;
 };
 
-Fuzzy::Fuzzy(std::vector<sf::Vector2i> segs, std::vector<int> dirs) {
+/*Fuzzy::Fuzzy(std::vector<sf::Vector2i> segs, std::vector<int> dirs) {
 	left = 0.0f;
 	midLeft = 0.0f;
 	midRight = 0.0f;
 	right = 0.0f;
 	segmentsPositions = segs;
 	directions = dirs;
-}
+}*/
 
 Fuzzy::~Fuzzy(){};
 

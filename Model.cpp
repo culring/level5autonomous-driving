@@ -162,12 +162,26 @@ void Race::playerMode() {
 void Race::aiMode(std::vector<sf::Vector2i> segs, std::vector<int> dirs) {
 	vehicle = new Car();
 	map = new Track();
-	fuzzySet = new Fuzzy();
+	fuzzySetTurn = new Fuzzy();
+	fuzzySetSpeedForTurn = new Fuzzy();
+	fuzzySetSpeedForStraight = new Fuzzy();
+	fuzzySetTurn->setInterval(-30.0f, -5.0f, 5.0f, 30.0f);
+	fuzzySetSpeedForTurn->setInterval(-500.0f, -450.0f, -50.0f, 50.0f);
+	fuzzySetSpeedForStraight->setInterval(-500.0f, -450.0f, -50.0f, 0.0f);
+	segmentsPositions = segs;
+	directions = dirs;
 }
 
 void Race::endGame() {
 	delete vehicle;
 	delete map;
+}
+
+void Race::endAIMode() {
+	delete fuzzySetTurn;
+	delete fuzzySetSpeedForTurn;
+	delete fuzzySetSpeedForStraight;
+	endGame();
 }
 
 Segment* Race::getMap()

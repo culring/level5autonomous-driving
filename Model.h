@@ -70,7 +70,10 @@ class Race
 public:
 	Car *vehicle;
 	Track *map;
-	Fuzzy *fuzzySet;
+	Fuzzy *fuzzySetTurn, *fuzzySetSpeedForTurn, *fuzzySetSpeedForStraight;
+	std::vector<sf::Vector2i> segmentsPositions;
+	std::vector<int> directions;
+
 	Race();
 	~Race();
 	
@@ -79,6 +82,7 @@ public:
 	void playerMode();
 	void aiMode(std::vector<sf::Vector2i> segs, std::vector<int> dirs);
 	void endGame();
+	void endAIMode();
 	float getCarX();
 	float getCarY();
 	float getCarDir();

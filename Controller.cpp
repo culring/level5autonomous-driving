@@ -102,25 +102,23 @@ void Controller::playerMode() {
 
 void Controller::aiMode() {
 	sf::Event event;
-	bool end = false;
 	std::cout << "aiMode" << std::endl;
 
 	while(this->window->isOpen()) {
-		while(this->window->pollEvent(event)) {
-			if(event.type == sf::Event::EventType::KeyPressed) {
-				if(sf::Keyboard::Key::Escape == event.key.code) {
-					//end race, back to menu
-					//model.endRace();
-					//view.endRace();
-					std::cout << "Pressed Escape - back to menu" << std::endl;
-					end = true;
-					break;
-				}
-			} else if(event.type == sf::Event::EventType::Closed) {
-				this->window->close();
-			}
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+			view->endGame();
+			model->endAIMode();
+			break;
 		}
 
-		if(end == true) break;
+		this->model->vehicle->update();
+		this->view->updateCar();
+		this->window->clear();
+		this->view->display();
+		this->window->display();
+
+		if(this->window->pollEvent(event) && event.type == sf::Event::EventType::Closed) {
+			this->window->close();
+		}
 	}
 }
