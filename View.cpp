@@ -5,7 +5,7 @@
 #include "View.h"
 
 View::View() : 
-	m_window(new sf::RenderWindow(sf::VideoMode(1280, 720), "Bylena3:<")), m_model(nullptr), m_viewCar(nullptr), m_viewTrack(nullptr)
+	m_window(new sf::RenderWindow(sf::VideoMode(1280, 720), "Racing game")), m_model(nullptr), m_viewCar(nullptr), m_viewTrack(nullptr)
 {
 	resetView();
 	initMenuElements();
@@ -13,9 +13,9 @@ View::View() :
 
 View::~View()
 {
-	delete m_window;
 	delete m_viewCar;
 	delete m_viewTrack;
+	delete m_window;
 }
 
 void View::updateCar() {

@@ -165,9 +165,9 @@ void Race::aiMode(std::vector<sf::Vector2i> segs, std::vector<int> dirs) {
 	fuzzySetTurn = new Fuzzy();
 	fuzzySetSpeedForTurn = new Fuzzy();
 	fuzzySetSpeedForStraight = new Fuzzy();
-	fuzzySetTurn->setInterval(-30.0f, -5.0f, 5.0f, 30.0f);
-	fuzzySetSpeedForTurn->setInterval(-500.0f, -450.0f, -50.0f, 50.0f);
-	fuzzySetSpeedForStraight->setInterval(-500.0f, -450.0f, -50.0f, 0.0f);
+	fuzzySetTurn->setInterval(-30.0f, -0.0f, 0.0f, 30.0f);
+	fuzzySetSpeedForTurn->setInterval(-500.0f, -450.0f, -150.0f, 800.0f);
+	fuzzySetSpeedForStraight->setInterval(-500.0f, -450.0f, -50.0f, 600.0f);
 	segmentsPositions = segs;
 	directions = dirs;
 }
