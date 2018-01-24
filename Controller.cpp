@@ -105,7 +105,8 @@ void Controller::aiMode() {
 	std::cout << "aiMode" << std::endl;
 	float turnRate = 30.0f;
 	float speedRate = 5.0f;
-	float turnValue = 0.0f;
+	float turnValueLeft = 0.0f;
+	float turnValueRight = 0.0f;
 	float speedValue = 0.0f;
 	float distance = 0.0f;
 	float direction = 0.0f;
@@ -120,28 +121,16 @@ void Controller::aiMode() {
 		}
 
 		/*** AI logic ***/
-		distance = sqrt(pow((model->segmentsPositions[segNo].x - model->vehicle->x), 2) + pow((model->segmentsPositions[segNo].y - model->vehicle->y), 2));
+		distance = sqrt((model->segmentsPositions[segNo].x - model->vehicle->x)^2 + (model->segmentsPositions[segNo].y - model->vehicle->y)^2);
+		direction = asin(((model->segmentsPositions[segNo].y - model->vehicle->y) * 180.0f) / (distance * M_PI));
 
-		//if(model->segmentsPositions[segNo-1].x != model->segmentsPositions[segNo].x)
-			direction = asin((model->segmentsPositions[segNo].y - model->vehicle->y)/distance) * 180.0f / M_PI;
-			//direction = atan((model->segmentsPositions[segNo].y - model->vehicle->y)/(model->segmentsPositions[segNo].x - model->vehicle->x)) * 180.0f / M_PI;
-		//else if(model->segmentsPositions[segNo-1].y != model->segmentsPositions[segNo].y)
-			//direction = acos((model->segmentsPositions[segNo].x - model->vehicle->x)/distance) * 180.0f / M_PI;
-/*
-		if((model->vehicle->x >= 0.90f*model->segmentsPositions[segNo].x) && (model->vehicle->x <= 1.1f*model->segmentsPositions[segNo].x)){ //&& (model->vehicle->y < model->segmentsPositions[segNo].y)) {
-			direction = 270.0f;
-		}
-		if((model->vehicle->x >= 0.90f*model->segmentsPositions[segNo].x) && (model->vehicle->x <= 1.1f*model->segmentsPositions[segNo].x)){//(model->vehicle->y > model->segmentsPositions[segNo].y)) {
-			direction = 90.0f;
-		}
-*/
 		dirSub = model->vehicle->dir - direction;
 		turnValue = model->fuzzySetTurn->getValue(dirSub) * turnRate;
 
 		if(dirSub > 0.0f && turnValue > 0.0f && model->vehicle->turn > (-turnValue))
-			model->vehicle->turnLeft();
-		else if (dirSub < 0.0f && turnValue > 0.0f && model->vehicle->turn < turnValue)
 			model->vehicle->turnRight();
+		else if (dirSub < 0.0f && turnValue > 0.0f && model->vehicle->turn < turnValue)
+			model->vehicle->turnLeft();
 
 		if(model->directions[segNo] == 1)
 			speedValue = model->fuzzySetSpeedForStraight->getValue(distance) * speedRate;
@@ -153,12 +142,7 @@ void Controller::aiMode() {
 		else if (model->vehicle->speed > speedValue)
 			model->vehicle->slow();
 
-		//if(model->vehicle->speed < 2.0f)
-			//model->vehicle->accel();
-
-		std::cout << "Distance: " << distance << "; Direction: " << direction << std::endl;
-
-		if(distance <= 100.0f)
+		if(distance <= 10.0f)
 			segNo++;
 
 		this->model->vehicle->update();

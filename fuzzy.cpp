@@ -1,5 +1,5 @@
 #include "fuzzy.h"
-
+/*
 Fuzzy::Fuzzy()
 {
 	left = 0.0f;
@@ -7,18 +7,7 @@ Fuzzy::Fuzzy()
 	midRight = 0.0f;
 	right = 0.0f;
 };
-
-/*Fuzzy::Fuzzy(std::vector<sf::Vector2i> segs, std::vector<int> dirs) {
-	left = 0.0f;
-	midLeft = 0.0f;
-	midRight = 0.0f;
-	right = 0.0f;
-	segmentsPositions = segs;
-	directions = dirs;
-}*/
-
 Fuzzy::~Fuzzy(){};
-
 void Fuzzy::setInterval(float l, float ml, float mr, float r)
 {
 	left = l;
@@ -26,15 +15,6 @@ void Fuzzy::setInterval(float l, float ml, float mr, float r)
 	midRight = mr;
 	right = r;
 }
-/*
-bool Fuzzy::isDotInInterval(float t)
-{
-	if((t>=left) && (t<=right))
-		return true;
-	else
-		return false;
-}
-*/
 float Fuzzy::getValue(float t)
 {
 	if(t <= left)
@@ -48,22 +28,28 @@ float Fuzzy::getValue(float t)
 	else
 		return 1.0f;
 }
+*/
 
+Fuzzy::Fuzzy()
+{
+	left = 0.0f;
+	right = 0.0f;
+};
 
-float dist;
-float turnValue;
-float rate = 5.0f;	// idk
-Fuzzy fuzzySet;
+Fuzzy::~Fuzzy(){};
 
-//fuzzySet.setInterval(-50.0f, 0.0f, 0.0f, 50.0f);
+void Fuzzy::setInterval(float l, float r)
+{
+	left = l;
+	right = r;
+}
 
-// in while
-
-// dist = segMid - vehiclePos
-//turnValue = fuzzySet.getValue(dist) * rate;
-/*
-  if((dist < 0.0f) && (vehicle.turn < turnValue))
-  	  vehicle.turnRight; 	// or left idk
-  if((dist > 0.0f) && (vehicle.turn > -turnValue))
-  	  vehicle.turnLeft;		// or right idk either
- */
+float Fuzzy::getValue(float t)
+{
+	if(t <= left)
+	   return 0.0f;
+	else if(t < right)
+		return (t-left)/(right-left);
+	else
+		return 1.0f;
+}
