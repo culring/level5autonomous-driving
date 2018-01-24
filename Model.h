@@ -70,10 +70,14 @@ class Race
 public:
 	Car *vehicle;
 	Track *map;
+
+//	Fuzzy *fuzzySetTurn;
 	Fuzzy *fuzzySetSpeedForTurn;
 	Fuzzy *fuzzySetSpeedForStraight;
+
 	Fuzzy *fuzzySetLeft;
 	Fuzzy *fuzzySetRight;
+
 	std::vector<sf::Vector2i> segmentsPositions;
 	std::vector<int> directions;
 

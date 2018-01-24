@@ -79,7 +79,7 @@ void Car::slow()
 void Car::update()
 {
 	float turnRad = turn * M_PI / (180.0f * 1.0f);
-	
+
 	dir = dir + turn / 1.0f;
 
 	float dirRad = dir * M_PI / 180.0f;

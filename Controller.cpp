@@ -102,7 +102,9 @@ void Controller::playerMode() {
 
 void Controller::aiMode() {
 	sf::Event event;
+	bool end = false;
 	std::cout << "aiMode" << std::endl;
+
 	float turnRate = 30.0f;
 	float speedRate = 5.0f;
 	float turnValueLeft = 0.0f;
@@ -112,6 +114,7 @@ void Controller::aiMode() {
 	float direction = 0.0f;
 	int segNo = 0;
 	float dirSub = 0.0f;
+
 
 	while(this->window->isOpen()) {
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {

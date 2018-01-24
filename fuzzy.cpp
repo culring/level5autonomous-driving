@@ -7,7 +7,9 @@ Fuzzy::Fuzzy()
 	midRight = 0.0f;
 	right = 0.0f;
 };
+
 Fuzzy::~Fuzzy(){};
+
 void Fuzzy::setInterval(float l, float ml, float mr, float r)
 {
 	left = l;
@@ -15,6 +17,7 @@ void Fuzzy::setInterval(float l, float ml, float mr, float r)
 	midRight = mr;
 	right = r;
 }
+
 float Fuzzy::getValue(float t)
 {
 	if(t <= left)
