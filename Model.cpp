@@ -79,7 +79,7 @@ void Car::slow()
 void Car::update()
 {
 	float turnRad = turn * M_PI / (180.0f * 1.0f);
-	
+
 	dir = dir + turn / 1.0f;
 
 	float dirRad = dir * M_PI / 180.0f;
@@ -162,10 +162,13 @@ void Race::playerMode() {
 void Race::aiMode(std::vector<sf::Vector2i> segs, std::vector<int> dirs) {
 	vehicle = new Car();
 	map = new Track();
-	fuzzySetTurn = new Fuzzy();
+	fuzzySetLeft = new Fuzzy();
+	fuzzySetRight = new Fuzzy();
 	fuzzySetSpeedForTurn = new Fuzzy();
 	fuzzySetSpeedForStraight = new Fuzzy();
-	fuzzySetTurn->setInterval(-30.0f, -0.0f, 0.0f, 30.0f);
+
+	fuzzySetLeft->setInterval(0.0f, 30.0f);
+	fuzzySetRight->setInterval(0.0f, 30.0f);
 	fuzzySetSpeedForTurn->setInterval(-500.0f, -450.0f, -150.0f, 800.0f);
 	fuzzySetSpeedForStraight->setInterval(-500.0f, -450.0f, -50.0f, 600.0f);
 	segmentsPositions = segs;
