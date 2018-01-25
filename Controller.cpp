@@ -123,7 +123,7 @@ void Controller::aiMode() {
 			break;
 		}
 
-		/*** AI logic ***/
+		/*
 		distance = sqrt((model->segmentsPositions[segNo].x - model->vehicle->x)^2 + (model->segmentsPositions[segNo].y - model->vehicle->y)^2);
 		direction = asin(((model->segmentsPositions[segNo].y - model->vehicle->y) * 180.0f) / (distance * M_PI));
 
@@ -147,6 +147,7 @@ void Controller::aiMode() {
 
 		if(distance <= 10.0f)
 			segNo++;
+		*/
 
 		this->model->vehicle->update();
 		this->view->updateCar();

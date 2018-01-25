@@ -148,11 +148,7 @@ void Track::update(float posX, float posY, float faceDir, int segmentType, float
 
 Race::Race() : map(nullptr), vehicle(nullptr) {}
 
-Race::~Race()
-{
-	delete vehicle;
-	delete map;
-}
+Race::~Race() {}
 
 void Race::playerMode() {
 	vehicle = new Car();
@@ -169,8 +165,8 @@ void Race::aiMode(std::vector<sf::Vector2i> segs, std::vector<int> dirs) {
 
 	fuzzySetLeft->setInterval(0.0f, 30.0f);
 	fuzzySetRight->setInterval(0.0f, 30.0f);
-	fuzzySetSpeedForTurn->setInterval(-500.0f, -450.0f, -150.0f, 800.0f);
-	fuzzySetSpeedForStraight->setInterval(-500.0f, -450.0f, -50.0f, 600.0f);
+	//fuzzySetSpeedForTurn->setInterval(-500.0f, -450.0f, -150.0f, 800.0f);
+	//fuzzySetSpeedForStraight->setInterval(-500.0f, -450.0f, -50.0f, 600.0f);
 	segmentsPositions = segs;
 	directions = dirs;
 }

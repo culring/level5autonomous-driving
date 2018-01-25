@@ -13,8 +13,6 @@ View::View() :
 
 View::~View()
 {
-	delete m_viewCar;
-	delete m_viewTrack;
 	delete m_window;
 }
 
