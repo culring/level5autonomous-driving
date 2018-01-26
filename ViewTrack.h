@@ -59,7 +59,7 @@ public:
 	void addSegmentRight();
 	void addSegmentStraight();
 	sf::Vector2f getPositionOfFirstSegment();
-	std::vector<sf::Vector2i> getSegmentsPosition();
+	std::vector<sf::Vector2f> getSegmentsPosition();
 	std::vector<int> getDirVector();
 };
 

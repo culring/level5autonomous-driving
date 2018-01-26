@@ -7,6 +7,7 @@
 //============================================================================
 
 #include "Controller.h"
+#include <math.h>
 
 Controller::Controller() {
 	this->model = new Race();
@@ -33,12 +34,13 @@ void Controller::menu() {
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num1)) {
 			this->model->playerMode();
 			this->view->gameMode();
+			this->model->setSegmentsPositions(view->getTrack()->getSegmentsPosition());
 			std::cout << "init playerMode" << std::endl;
 			playerMode();
 			view->resetView();
 		} else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num2)) {
 			view->gameMode();
-			std::vector<sf::Vector2i> positions = view->getTrack()->getSegmentsPosition();
+			std::vector<sf::Vector2f> positions = view->getTrack()->getSegmentsPosition();
 			std::vector<int> directions = view ->getTrack()->getDirVector();
 			model->aiMode(positions, directions);
 			std::cout << "init aiMode" << std::endl;
@@ -94,6 +96,19 @@ void Controller::playerMode() {
 		this->view->display();
 		this->window->display();
 
+		this->model->updateSegmentIndex();
+
+		float angle = model->getCarDirectionToTrackAngle();
+		unsigned currentCenter = this->model->getCurrentSegmentIndex();
+		// convert angle to degrees
+		angle *= (360.0f / (2 * M_PI));
+		std::cout << currentCenter << ": " << model->getCarToTrackDistance() << std::endl;
+//		std::cout << currentCenter << ": " << this->model->getCurrentCarSide() << std::endl;
+//		std::cout << this->model->getCarPosition().x << ", " << this->model->getCarPosition().y << ": ";
+//		std::cout << this->model->getPreviousCenter().x << ", " << this->model->getPreviousCenter().y << " | ";
+//		std::cout << this->model->getCurrentCenter().x << ", " << this->model->getCurrentCenter().y << std::endl;
+ //		std::cout << currentCenter << ": " << this->model->getCarPosition().x << ", " << this->model->getCarPosition().y << std::endl;
+
 		if(this->window->pollEvent(event) && event.type == sf::Event::EventType::Closed) {
 			this->window->close();
 		}
@@ -115,6 +130,7 @@ void Controller::aiMode() {
 	int segNo = 0;
 	float dirSub = 0.0f;
 
+	model->vehicle->speed = 2.0f;
 
 	while(this->window->isOpen()) {
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
@@ -149,7 +165,43 @@ void Controller::aiMode() {
 			segNo++;
 		*/
 
+		float distanceParameter = model->getCarToTrackDistance();
+		float directionParameter = model->getCarDirectionToTrackAngle()*((model->getCurrentCarSide() == false) ? 1 : -1);
+		directionParameter *= 180.0f / M_PI;
+		float sideParameter = model->getCarToTrackAngle();
+		sideParameter *= 180.0f / M_PI;
+		float angleParameter = model->getCarDirectionToTrackAngle();
+		angleParameter *= 180.0f / M_PI;
+
+		std::cout << distanceParameter << " | " << directionParameter << " | " << sideParameter << " | " << angleParameter << std::endl;
+
+		// fuzzy rules
+		COMMAND command = fuzzyController.getCommand(
+			distanceParameter,
+			directionParameter,
+			sideParameter,
+			angleParameter
+		);
+
+		switch (command)
+		{
+		case TURN_LEFT:
+			model->vehicle->turnLeft();
+			break;
+
+		case TURN_RIGHT:
+			model->vehicle->turnRight();
+			break;
+
+		case DONT_TURN:
+			break;
+
+		default:
+			break;
+		}
+
 		this->model->vehicle->update();
+		this->model->updateSegmentIndex();
 		this->view->updateCar();
 		this->window->clear();
 		this->view->display();

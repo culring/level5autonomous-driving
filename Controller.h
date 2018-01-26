@@ -15,12 +15,17 @@
 #include "View.h"
 #include "Model.h"
 #include <SFML/Window/Keyboard.hpp>
+#include "FuzzySet.h"
 
 class Controller {
 private:
 	Race *model;
 	View *view;
 	sf::RenderWindow *window;
+
+	// fuzzy
+	FuzzyController fuzzyController;
+
 public:
 	Controller();
 	//Controller(Race *m, View *v);

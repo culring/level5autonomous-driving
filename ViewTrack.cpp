@@ -314,11 +314,11 @@ sf::Vector2f ViewTrack::getPositionOfFirstSegment()
 	return m_sprites[0].getPosition();
 }
 
-std::vector<sf::Vector2i> ViewTrack::getSegmentsPosition() {
-	std::vector<sf::Vector2i> positions;
+std::vector<sf::Vector2f> ViewTrack::getSegmentsPosition() {
+	std::vector<sf::Vector2f> positions;
 
 	for(auto seg : m_sprites) {
-		positions.push_back((sf::Vector2i)seg.getPosition());
+		positions.push_back(seg.getPosition());
 	}
 
 	return positions;

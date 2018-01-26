@@ -3,7 +3,7 @@
 //
 
 #include "Controller.h"
-#include "View.h"
+#include "FuzzySet.h"
 
 int main(void) {
 	Controller controller;
@@ -12,7 +12,9 @@ int main(void) {
 	//model.addView(view);
 	//view.addmodel(model);
 	//Controller c(model, view);
+
 	controller.menu();
 	std::cout << "end main" << std::endl;
+
 	return 0;
 }
