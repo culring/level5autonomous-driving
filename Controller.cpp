@@ -141,7 +141,7 @@ void Controller::aiMode() {
 	int segNo = 0;
 	float dirSub = 0.0f;
 
-	model->vehicle->speed = 2.0f;
+	model->vehicle->speed = 3.0f;
 
 	while(this->window->isOpen()) {
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {

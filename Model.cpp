@@ -287,10 +287,10 @@ float Race::getCarToTrackDistance()
 	// horizontal segment
 	if(previousCenter.y == currentCenter.y)
 	{
-		return abs(currentCarPosition.y - previousCenter.y);
+		return fabs(currentCarPosition.y - previousCenter.y);
 	}
 	// vertical segment
-	return abs(currentCarPosition.x - previousCenter.x);
+	return fabs(currentCarPosition.x - previousCenter.x);
 }
 
 bool Race::getCurrentCarSide()
@@ -376,13 +376,26 @@ void Race::updateSegmentIndex()
 	sf::Vector2f carPosition = { getCarX(), getCarY() },
 		nextCenter = getNextCenter();
 	sf::Vector2f carToCenter = nextCenter - carPosition;
-	float carDistanceToCenter = sqrt((carToCenter.x*carToCenter.x)+(carToCenter.y*carToCenter.y));
+	if(getCurrentCenter().x != nextCenter.x && getPreviousCenter().x == getCurrentCenter().x) {
+		if(fabs(getCurrentCenter().y - carPosition.y) < 60.0f) {
+			++currentSegmentIndex;
+		}
+	} else if (getCurrentCenter().y != nextCenter.y && getPreviousCenter().y == getPreviousCenter().y) {
+		if(fabs(getCurrentCenter().x - carPosition.x) < 60.0f) {
+			++currentSegmentIndex;
+		}
+	} else {
+		float carDistanceToCenter = sqrt((carToCenter.x*carToCenter.x)+(carToCenter.y*carToCenter.y));
+
+		if(carDistanceToCenter <= 160.0f*2)
+		{
+			++currentSegmentIndex;
+		}
+	}
+	//float carDistanceToCenter = sqrt((carToCenter.x*carToCenter.x)+(carToCenter.y*carToCenter.y));
 	// if near enough jump to next segment
 //	if(carDistanceToCenter <= 152.85f*2)
-	if(carDistanceToCenter <= 160.0f*2)
-	{
-		++currentSegmentIndex;
-	}
+
 	std::cout << currentSegmentIndex << std::endl;
 }
 
