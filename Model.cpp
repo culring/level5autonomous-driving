@@ -284,14 +284,13 @@ float Race::getCarToTrackDistance()
 		currentCenter = getCurrentCenter();
 	sf::Vector2f currentCarPosition = getCarPosition();
 
-	float multiplier = (getCurrentCarSide()) ? -1 : 1;
 	// horizontal segment
 	if(previousCenter.y == currentCenter.y)
 	{
-		return multiplier*abs(currentCarPosition.y - previousCenter.y);
+		return abs(currentCarPosition.y - previousCenter.y);
 	}
 	// vertical segment
-	return multiplier*(currentCarPosition.x - previousCenter.x);
+	return abs(currentCarPosition.x - previousCenter.x);
 }
 
 bool Race::getCurrentCarSide()
@@ -357,7 +356,19 @@ float Race::getCarToTrackAngle()
 {
 	sf::Vector2f trackVector = getTrackVector();
 	sf::Vector2f carVector = getCarPosition() - getPreviousCenter();
-	return getSideOfVectorRelativeToVector(trackVector, carVector);
+	
+	float cosine = getDotProduct(trackVector, carVector) /
+		(getVectorLength(trackVector)*getVectorLength(carVector));
+	// angle in bounds [0; pi]
+	float angle = acos(cosine);
+	// if car direction vector lies
+	// on the left of track vector
+	// that means angle should be negative
+	if (!getSideOfVectorRelativeToVector(trackVector, carVector))
+	{
+		angle *= -1;
+	}
+	return angle;
 }
 
 void Race::updateSegmentIndex()
@@ -373,6 +384,11 @@ void Race::updateSegmentIndex()
 		++currentSegmentIndex;
 	}
 	std::cout << currentSegmentIndex << std::endl;
+}
+
+void Race::switchToNextSegment()
+{
+	++currentSegmentIndex;
 }
 
 unsigned Race::getCurrentSegmentIndex()

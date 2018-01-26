@@ -127,6 +127,7 @@ public:
 	float getCarToTrackAngle();
 	// update that car reached next segment
 	void updateSegmentIndex();
+	void switchToNextSegment();
 
 	// for debug
 

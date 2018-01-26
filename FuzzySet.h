@@ -265,7 +265,7 @@ public:
 //		float directionTolerance = 2.0f,
 //		float sideTolerance = 5.0f,
 //		float boundaryAngle = 45.0f, float angleTolerance = 5.0f
-		float distanceBoundary = 52.0f, float distanceTolerance = 0.01f,
+		float distanceBoundary = 60.0f, float distanceTolerance = 0.01f,
 		float directionTolerance = 5.0f,
 		float sideTolerance = 0.01f,
 		float boundaryAngle = 45.0f, float angleTolerance = 0.01f

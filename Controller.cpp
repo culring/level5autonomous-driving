@@ -102,7 +102,18 @@ void Controller::playerMode() {
 		unsigned currentCenter = this->model->getCurrentSegmentIndex();
 		// convert angle to degrees
 		angle *= (360.0f / (2 * M_PI));
-		std::cout << currentCenter << ": " << model->getCarToTrackDistance() << std::endl;
+
+		float distanceParameter = model->getCarToTrackDistance();
+		float directionParameter = model->getCarDirectionToTrackAngle()*((model->getCurrentCarSide() == true) ? 1 : -1);
+		directionParameter *= 180.0f / M_PI;
+		float sideParameter = model->getCarToTrackAngle();
+		sideParameter *= 180.0f / M_PI;
+		float angleParameter = model->getCarDirectionToTrackAngle();
+		angleParameter *= 180.0f / M_PI;
+
+		std::cout << currentCenter << ": " << distanceParameter << " | " << directionParameter << " | " << sideParameter << " | " << angleParameter << std::endl;
+
+//		std::cout << currentCenter << ": " << model->getCarToTrackDistance() << std::endl;
 //		std::cout << currentCenter << ": " << this->model->getCurrentCarSide() << std::endl;
 //		std::cout << this->model->getCarPosition().x << ", " << this->model->getCarPosition().y << ": ";
 //		std::cout << this->model->getPreviousCenter().x << ", " << this->model->getPreviousCenter().y << " | ";
@@ -165,8 +176,16 @@ void Controller::aiMode() {
 			segNo++;
 		*/
 
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+		{
+			this->model->switchToNextSegment();
+			std::cout << "AAA" << std::endl;
+			std::cout << "AAA" << std::endl;
+			std::cout << "AAA" << std::endl;
+		}
+
 		float distanceParameter = model->getCarToTrackDistance();
-		float directionParameter = model->getCarDirectionToTrackAngle()*((model->getCurrentCarSide() == false) ? 1 : -1);
+		float directionParameter = model->getCarDirectionToTrackAngle()*((model->getCurrentCarSide() == true) ? 1 : -1);
 		directionParameter *= 180.0f / M_PI;
 		float sideParameter = model->getCarToTrackAngle();
 		sideParameter *= 180.0f / M_PI;
