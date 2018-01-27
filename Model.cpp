@@ -19,7 +19,8 @@ void Car::turnLeft()
 //	if (turn >= -30.0f)
 //		turn = turn - 0.2f;
 	if (turn >= -30.0f)
-		turn = turn - 1.0f;
+//		turn = turn - 1.0f;
+		turn = turn - 1.5f;
 }
 
 void Car::turnRight()
@@ -27,7 +28,8 @@ void Car::turnRight()
 //	if (turn <= 30.0f)
 //		turn = turn + 0.2f;	
 	if (turn <= 30.0f)
-		turn = turn + 1.0f;
+//		turn = turn + 1.0f;
+		turn = turn + 1.5f;
 }
 
 void Car::stabilize()
@@ -160,6 +162,10 @@ bool Race::getSideOfVectorRelativeToVector(sf::Vector2f vectorA, sf::Vector2f ve
 
 sf::Vector2f Race::getPreviousCenter()
 {
+	if(currentSegmentIndex == 1)
+	{
+		return{ -1, 0 };
+	}
 	return m_segmentsPositions[currentSegmentIndex - 1];
 }
 
@@ -373,15 +379,16 @@ float Race::getCarToTrackAngle()
 
 void Race::updateSegmentIndex()
 {
+	const float DISTANCE = 150.0f;
 	sf::Vector2f carPosition = { getCarX(), getCarY() },
 		nextCenter = getNextCenter();
 	sf::Vector2f carToCenter = nextCenter - carPosition;
 	if(getCurrentCenter().x != nextCenter.x && getPreviousCenter().x == getCurrentCenter().x) {
-		if(fabs(getCurrentCenter().y - carPosition.y) < 60.0f) {
+		if(fabs(getCurrentCenter().y - carPosition.y) < DISTANCE) {
 			++currentSegmentIndex;
 		}
-	} else if (getCurrentCenter().y != nextCenter.y && getPreviousCenter().y == getPreviousCenter().y) {
-		if(fabs(getCurrentCenter().x - carPosition.x) < 60.0f) {
+	} else if (getCurrentCenter().y != nextCenter.y && getPreviousCenter().y == getCurrentCenter().y) {
+		if(fabs(getCurrentCenter().x - carPosition.x) < DISTANCE) {
 			++currentSegmentIndex;
 		}
 	} else {

@@ -104,7 +104,12 @@ void Controller::playerMode() {
 		angle *= (360.0f / (2 * M_PI));
 
 		float distanceParameter = model->getCarToTrackDistance();
-		float directionParameter = model->getCarDirectionToTrackAngle()*((model->getCurrentCarSide() == true) ? 1 : -1);
+		float directionParameter = model->getCarDirectionToTrackAngle();
+		// on the left side change sign
+		if (!model->getCurrentCarSide())
+		{
+			directionParameter *= -1;
+		}
 		directionParameter *= 180.0f / M_PI;
 		float sideParameter = model->getCarToTrackAngle();
 		sideParameter *= 180.0f / M_PI;
@@ -141,7 +146,8 @@ void Controller::aiMode() {
 	int segNo = 0;
 	float dirSub = 0.0f;
 
-	model->vehicle->speed = 3.0f;
+//	model->vehicle->speed = 3.0f;
+	model->vehicle->speed = 5.0f;
 
 	while(this->window->isOpen()) {
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
@@ -176,16 +182,14 @@ void Controller::aiMode() {
 			segNo++;
 		*/
 
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-		{
-			this->model->switchToNextSegment();
-			std::cout << "AAA" << std::endl;
-			std::cout << "AAA" << std::endl;
-			std::cout << "AAA" << std::endl;
-		}
-
 		float distanceParameter = model->getCarToTrackDistance();
-		float directionParameter = model->getCarDirectionToTrackAngle()*((model->getCurrentCarSide() == true) ? 1 : -1);
+		float directionParameter = model->getCarDirectionToTrackAngle();
+		// on the left side change sign
+		if (!model->getCurrentCarSide())
+		{
+			directionParameter *= -1;
+		}
+//		float directionParameter = model->getCarDirectionToTrackAngle()*((model->getCurrentCarSide() == true) ? 1 : -1);
 		directionParameter *= 180.0f / M_PI;
 		float sideParameter = model->getCarToTrackAngle();
 		sideParameter *= 180.0f / M_PI;

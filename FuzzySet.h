@@ -2,6 +2,8 @@
 #include <exception>
 #include <vector>
 #include <algorithm>
+#include <ostream>
+#include <iostream>
 
 class WrongFuzzyParameters : public std::exception
 {
@@ -88,7 +90,7 @@ public:
 	}
 	float high(float t)
 	{
-		return m_fuzzySets[1]->getValue(1);
+		return m_fuzzySets[1]->getValue(t);
 	}
 };
 
@@ -265,10 +267,10 @@ public:
 //		float directionTolerance = 2.0f,
 //		float sideTolerance = 5.0f,
 //		float boundaryAngle = 45.0f, float angleTolerance = 5.0f
-		float distanceBoundary = 60.0f, float distanceTolerance = 0.01f,
+		float distanceBoundary = 70.0f, float distanceTolerance = 0.01f,
 		float directionTolerance = 5.0f,
 		float sideTolerance = 0.01f,
-		float boundaryAngle = 45.0f, float angleTolerance = 0.01f
+		float boundaryAngle = 60.0f, float angleTolerance = 0.01f
 	)
 	{
 		m_featureDistance = new FeatureDistance(distanceBoundary, distanceTolerance);
@@ -306,28 +308,30 @@ public:
 			noTurnProbability = 0.0f;
 
 		// fuzzy rules
-		rightProbability = std::max(rightProbability, std::min(highDistance, std::min(in, std::min(lowAngle, left))));
-		leftProbability = std::max(leftProbability, std::min(highDistance, std::min(in, std::min(lowAngle, right))));
-		noTurnProbability = std::max(noTurnProbability, std::min(highDistance, std::min(in, highAngle)));
-		rightProbability = std::max(rightProbability, std::min(highDistance, std::min(out, left)));
-		leftProbability = std::max(leftProbability, std::min(highDistance, std::min(out, right)));
-		rightProbability = std::max(rightProbability, std::min(highDistance, std::min(zeroAngle, left)));
-		leftProbability = std::max(leftProbability, std::min(highDistance, std::min(zeroAngle, right)));
-		leftProbability = std::max(leftProbability, std::min(lowDistance, std::min(in, std::min(lowAngle, left))));
-		leftProbability = std::max(leftProbability, std::min(lowDistance, std::min(in, std::min(highAngle, left))));
-		rightProbability = std::max(rightProbability, std::min(lowDistance, std::min(in, std::min(lowAngle, right))));
-		rightProbability = std::max(rightProbability, std::min(lowDistance, std::min(in, std::min(highAngle, right))));
-		rightProbability = std::max(rightProbability, std::min(lowDistance, std::min(out, std::min(lowAngle, left))));
-		leftProbability = std::max(leftProbability, std::min(lowDistance, std::min(out, std::min(lowAngle, right))));
-		rightProbability = std::max(rightProbability, std::min(highDistance, std::min(out, std::min(lowAngle, left))));
-		leftProbability = std::max(leftProbability, std::min(highDistance, std::min(out, std::min(lowAngle, right))));
-		noTurnProbability = std::max(noTurnProbability, std::min(lowDistance, zeroAngle));
+		/* 1*/ rightProbability = std::max(rightProbability, std::min(highDistance, std::min(in, std::min(lowAngle, left))));
+		/* 2*/ leftProbability = std::max(leftProbability, std::min(highDistance, std::min(in, std::min(lowAngle, right))));
+		/* 3*/ noTurnProbability = std::max(noTurnProbability, std::min(highDistance, std::min(in, highAngle)));
+		/* 4*/ rightProbability = std::max(rightProbability, std::min(highDistance, std::min(out, left)));
+		/* 5*/ leftProbability = std::max(leftProbability, std::min(highDistance, std::min(out, right)));
+		/* 6*/ rightProbability = std::max(rightProbability, std::min(highDistance, std::min(zeroAngle, left)));
+		/* 7*/ leftProbability = std::max(leftProbability, std::min(highDistance, std::min(zeroAngle, right)));
+		/* 8*/ leftProbability = std::max(leftProbability, std::min(lowDistance, std::min(in, std::min(lowAngle, left))));
+		/* 9*/ leftProbability = std::max(leftProbability, std::min(lowDistance, std::min(in, std::min(highAngle, left))));
+		/*10*/ rightProbability = std::max(rightProbability, std::min(lowDistance, std::min(in, std::min(lowAngle, right))));
+		/*11*/ rightProbability = std::max(rightProbability, std::min(lowDistance, std::min(in, std::min(highAngle, right))));
+		/*12*/ rightProbability = std::max(rightProbability, std::min(lowDistance, std::min(out, std::min(lowAngle, left))));
+		/*12*/ leftProbability = std::max(leftProbability, std::min(lowDistance, std::min(out, std::min(lowAngle, right))));
+		/*13*/ rightProbability = std::max(rightProbability, std::min(lowDistance, std::min(out, std::min(highAngle, left))));
+		/*14*/ leftProbability = std::max(leftProbability, std::min(lowDistance, std::min(out, std::min(highAngle, right))));
+		/*15*/ noTurnProbability = std::max(noTurnProbability, std::min(lowDistance, zeroAngle));
 
-		if(leftProbability >= rightProbability && leftProbability >= noTurnProbability)
+		std::cout << "inputs: " << lowDistance << " " << highDistance << std::endl;
+		std::cout << "probabilities: " << leftProbability << " " << rightProbability << " " << noTurnProbability << std::endl;
+		if (leftProbability >= rightProbability && leftProbability >= noTurnProbability)
 		{
 			return TURN_LEFT;
 		}
-		if(rightProbability >= leftProbability && rightProbability >= noTurnProbability)
+		if (rightProbability >= leftProbability && rightProbability >= noTurnProbability)
 		{
 			return TURN_RIGHT;
 		}
