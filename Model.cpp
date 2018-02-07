@@ -383,14 +383,17 @@ void Race::updateSegmentIndex()
 	sf::Vector2f carPosition = { getCarX(), getCarY() },
 		nextCenter = getNextCenter();
 	sf::Vector2f carToCenter = nextCenter - carPosition;
+	// turn from horizontal to vertical
 	if(getCurrentCenter().x != nextCenter.x && getPreviousCenter().x == getCurrentCenter().x) {
 		if(fabs(getCurrentCenter().y - carPosition.y) < DISTANCE) {
 			++currentSegmentIndex;
 		}
+	// turn from vertical to horizontal
 	} else if (getCurrentCenter().y != nextCenter.y && getPreviousCenter().y == getCurrentCenter().y) {
 		if(fabs(getCurrentCenter().x - carPosition.x) < DISTANCE) {
 			++currentSegmentIndex;
 		}
+	// no turn
 	} else {
 		float carDistanceToCenter = sqrt((carToCenter.x*carToCenter.x)+(carToCenter.y*carToCenter.y));
 
@@ -399,9 +402,6 @@ void Race::updateSegmentIndex()
 			++currentSegmentIndex;
 		}
 	}
-	//float carDistanceToCenter = sqrt((carToCenter.x*carToCenter.x)+(carToCenter.y*carToCenter.y));
-	// if near enough jump to next segment
-//	if(carDistanceToCenter <= 152.85f*2)
 
 	std::cout << currentSegmentIndex << std::endl;
 }

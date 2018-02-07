@@ -146,7 +146,7 @@ void Controller::aiMode() {
 	int segNo = 0;
 	float dirSub = 0.0f;
 
-//	model->vehicle->speed = 3.0f;
+//	model->vehicle->speed = 7.0f;
 	model->vehicle->speed = 5.0f;
 
 	while(this->window->isOpen()) {
@@ -155,32 +155,6 @@ void Controller::aiMode() {
 			model->endAIMode();
 			break;
 		}
-
-		/*
-		distance = sqrt((model->segmentsPositions[segNo].x - model->vehicle->x)^2 + (model->segmentsPositions[segNo].y - model->vehicle->y)^2);
-		direction = asin(((model->segmentsPositions[segNo].y - model->vehicle->y) * 180.0f) / (distance * M_PI));
-
-		dirSub = model->vehicle->dir - direction;
-		turnValue = model->fuzzySetTurn->getValue(dirSub) * turnRate;
-
-		if(dirSub > 0.0f && turnValue > 0.0f && model->vehicle->turn > (-turnValue))
-			model->vehicle->turnRight();
-		else if (dirSub < 0.0f && turnValue > 0.0f && model->vehicle->turn < turnValue)
-			model->vehicle->turnLeft();
-
-		if(model->directions[segNo] == 1)
-			speedValue = model->fuzzySetSpeedForStraight->getValue(distance) * speedRate;
-		else
-			speedValue = model->fuzzySetSpeedForTurn->getValue(distance) * speedRate;
-
-		if(model->vehicle->speed < speedValue)
-			model->vehicle->accel();
-		else if (model->vehicle->speed > speedValue)
-			model->vehicle->slow();
-
-		if(distance <= 10.0f)
-			segNo++;
-		*/
 
 		float distanceParameter = model->getCarToTrackDistance();
 		float directionParameter = model->getCarDirectionToTrackAngle();

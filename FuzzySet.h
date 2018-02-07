@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <ostream>
 #include <iostream>
+#include <list>
 
 class WrongFuzzyParameters : public std::exception
 {
@@ -97,36 +98,45 @@ public:
 class FeatureDirection
 {
 	float m_directionTolerance;
-	FuzzySet *m_fuzzySets[2];
+	FuzzySet *m_fuzzySets[3];
 
 public:
 	FeatureDirection(float directionTolerance) :
 		m_directionTolerance(directionTolerance)
 	{
 		// in
-		CompundFuzzySet *inFuzzySet = new CompundFuzzySet();
-		TriangleFuzzySet *inTriangleFuzzySet = new TriangleFuzzySet(-180.0f, -180.0f, -180.0f + 2 * m_directionTolerance);
 		TrapezoidFuzzySet *inTrapezoidFuzzySet = new TrapezoidFuzzySet(
-			-m_directionTolerance, m_directionTolerance, 
-			180.0f - 2*m_directionTolerance, 180.0f
+			-m_directionTolerance, m_directionTolerance,
+			90.0f - m_directionTolerance, 90.0f + directionTolerance
 		);
-		inFuzzySet->addFuzzySet(inTriangleFuzzySet);
-		inFuzzySet->addFuzzySet(inTrapezoidFuzzySet);
+
+		// in_backwards
+		CompundFuzzySet *inBackwardsFuzzySet = new CompundFuzzySet();
+		TrapezoidFuzzySet *inBackwardsTrapezoidFuzzySet = new TrapezoidFuzzySet(
+			90.0f - directionTolerance, 90.0f + directionTolerance,
+			180.0f - directionTolerance, 180.0f + directionTolerance
+		);
+		TriangleFuzzySet *inBackwardsTriangleFuzzySet = new TriangleFuzzySet(
+			-180.0f - directionTolerance, -180.0f - directionTolerance, -180.0f + directionTolerance
+		);
+		inBackwardsFuzzySet->addFuzzySet(inBackwardsTrapezoidFuzzySet);
+		inBackwardsFuzzySet->addFuzzySet(inBackwardsTriangleFuzzySet);
 
 		//out
 		CompundFuzzySet *outFuzzySet = new CompundFuzzySet();
 		TriangleFuzzySet *outTriangleFuzzySet = new TriangleFuzzySet(
-			180.0f - 2 * m_directionTolerance, 180.0f, 180.0f
+			180.0f - m_directionTolerance, 180.0f + m_directionTolerance, 180.0f + m_directionTolerance
 		);
 		TrapezoidFuzzySet *outTrapezoidFuzzySet = new TrapezoidFuzzySet(
-			-180.0f, -180.0f + 2*m_directionTolerance,
+			-180.0f - m_directionTolerance, -180.0f + m_directionTolerance,
 			-m_directionTolerance, m_directionTolerance
 		);
 		outFuzzySet->addFuzzySet(outTriangleFuzzySet);
 		outFuzzySet->addFuzzySet(outTrapezoidFuzzySet);
 
-		m_fuzzySets[0] = inFuzzySet;
-		m_fuzzySets[1] = outFuzzySet;
+		m_fuzzySets[0] = inTrapezoidFuzzySet;
+		m_fuzzySets[1] = inBackwardsFuzzySet;
+		m_fuzzySets[2] = outFuzzySet;
 	}
 	~FeatureDirection()
 	{
@@ -136,13 +146,17 @@ public:
 		}
 	}
 
-	float in(float t)
+	float in(float t) const
 	{
 		return m_fuzzySets[0]->getValue(t);
 	}
-	float out(float t)
+	float inBackwards(float t) const 
 	{
 		return m_fuzzySets[1]->getValue(t);
+	}
+	float out(float t) const 
+	{
+		return m_fuzzySets[2]->getValue(t);
 	}
 };
 
@@ -254,8 +268,16 @@ enum COMMAND
 	DONT_TURN
 };
 
+template<typename T>
+T computeRuleValue(const std::initializer_list<T> &list)
+{
+	std::initializer_list<T> list2(list.begin()+1, list.end());
+	return std::max(*list.begin(), min(list2));
+}
+
 class FuzzyController
 {
+private:
 	FeatureDistance *m_featureDistance;
 	FeatureAngle *m_featureAngle;
 	FeatureDirection *m_featureDirection;
@@ -291,11 +313,12 @@ public:
 		float directionParameter,
 		float sideParameter,
 		float angleParameter
-	)
+	) const
 	{
-		float lowDistance = m_featureDistance->low(distanceParameter),
+		double lowDistance = m_featureDistance->low(distanceParameter),
 			highDistance = m_featureDistance->high(distanceParameter),
 			in = m_featureDirection->in(directionParameter),
+			inBackwards = m_featureDirection->inBackwards(directionParameter),
 			out = m_featureDirection->out(directionParameter),
 			left = m_featureSide->left(sideParameter),
 			right = m_featureSide->right(sideParameter),
@@ -303,27 +326,35 @@ public:
 			lowAngle = m_featureAngle->low(angleParameter),
 			highAngle = m_featureAngle->high(angleParameter);
 			
-		float leftProbability = 0.0f,
+		double leftProbability = 0.0f,
 			rightProbability = 0.0f,
 			noTurnProbability = 0.0f;
 
 		// fuzzy rules
-		/* 1*/ rightProbability = std::max(rightProbability, std::min(highDistance, std::min(in, std::min(lowAngle, left))));
-		/* 2*/ leftProbability = std::max(leftProbability, std::min(highDistance, std::min(in, std::min(lowAngle, right))));
-		/* 3*/ noTurnProbability = std::max(noTurnProbability, std::min(highDistance, std::min(in, highAngle)));
-		/* 4*/ rightProbability = std::max(rightProbability, std::min(highDistance, std::min(out, left)));
-		/* 5*/ leftProbability = std::max(leftProbability, std::min(highDistance, std::min(out, right)));
-		/* 6*/ rightProbability = std::max(rightProbability, std::min(highDistance, std::min(zeroAngle, left)));
-		/* 7*/ leftProbability = std::max(leftProbability, std::min(highDistance, std::min(zeroAngle, right)));
-		/* 8*/ leftProbability = std::max(leftProbability, std::min(lowDistance, std::min(in, std::min(lowAngle, left))));
-		/* 9*/ leftProbability = std::max(leftProbability, std::min(lowDistance, std::min(in, std::min(highAngle, left))));
-		/*10*/ rightProbability = std::max(rightProbability, std::min(lowDistance, std::min(in, std::min(lowAngle, right))));
-		/*11*/ rightProbability = std::max(rightProbability, std::min(lowDistance, std::min(in, std::min(highAngle, right))));
-		/*12*/ rightProbability = std::max(rightProbability, std::min(lowDistance, std::min(out, std::min(lowAngle, left))));
-		/*12*/ leftProbability = std::max(leftProbability, std::min(lowDistance, std::min(out, std::min(lowAngle, right))));
-		/*13*/ rightProbability = std::max(rightProbability, std::min(lowDistance, std::min(out, std::min(highAngle, left))));
-		/*14*/ leftProbability = std::max(leftProbability, std::min(lowDistance, std::min(out, std::min(highAngle, right))));
-		/*15*/ noTurnProbability = std::max(noTurnProbability, std::min(lowDistance, zeroAngle));
+		leftProbability = computeRuleValue({ leftProbability, inBackwards, 1 - zeroAngle, left });
+		rightProbability = computeRuleValue({ rightProbability, inBackwards, 1 - zeroAngle, right });
+
+		rightProbability = computeRuleValue({ rightProbability, highDistance, in, lowAngle, left });
+		leftProbability = computeRuleValue({ leftProbability, highDistance, in, lowAngle, right });
+		noTurnProbability = computeRuleValue({ noTurnProbability, highDistance, in, highAngle });
+		
+		rightProbability = computeRuleValue({ rightProbability, highDistance, out, left });
+		leftProbability = computeRuleValue({ leftProbability, highDistance, out, right });
+		rightProbability = computeRuleValue({ rightProbability, highDistance, zeroAngle, left });
+
+		leftProbability = computeRuleValue({ leftProbability, highDistance, zeroAngle, right });
+		leftProbability = computeRuleValue({ leftProbability, lowDistance, in, lowAngle, left });
+		leftProbability = computeRuleValue({ leftProbability, lowDistance, in, highAngle, left });
+
+		rightProbability = computeRuleValue({ rightProbability, lowDistance, in, lowAngle, right });
+		rightProbability = computeRuleValue({ rightProbability, lowDistance, in, highAngle, right });
+		rightProbability = computeRuleValue({ rightProbability, lowDistance, out, lowAngle, left });
+
+		leftProbability = computeRuleValue({ leftProbability, lowDistance, out, lowAngle, right });
+		rightProbability = computeRuleValue({ rightProbability, lowDistance, out, highAngle, left });
+		leftProbability = computeRuleValue({ leftProbability, lowDistance, out, highAngle, right });
+
+		noTurnProbability = computeRuleValue({ noTurnProbability, lowDistance, zeroAngle });
 
 		std::cout << "inputs: " << lowDistance << " " << highDistance << std::endl;
 		std::cout << "probabilities: " << leftProbability << " " << rightProbability << " " << noTurnProbability << std::endl;
