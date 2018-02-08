@@ -5,6 +5,7 @@
 #include <ostream>
 #include <iostream>
 #include <list>
+#include "Feature.h"
 
 class WrongFuzzyParameters : public std::exception
 {
@@ -57,25 +58,24 @@ public:
 	float getValue(float t) override;
 };
 
-class FeatureDistance
+class FeatureDistance : public Feature
 {
 	float m_distanceTolerance, m_distanceBoundary;
-	FuzzySet *m_fuzzySets[2];
 
 public:
 	FeatureDistance(float distanceBoundary, float distanceTolerance) :
 		m_distanceBoundary(distanceBoundary), m_distanceTolerance(distanceTolerance)
 	{
 		// low fuzzy set
-		m_fuzzySets[0] = new TrapezoidFuzzySet(
+		m_fuzzySets.push_back(new TrapezoidFuzzySet(
 			0.0f, 0.0f, 
 			distanceBoundary - distanceTolerance, distanceBoundary + distanceTolerance
-		);
+		));
 		// high fuzzy set
-		m_fuzzySets[1] = new TrapezoidFuzzySet(
+		m_fuzzySets.push_back(new TrapezoidFuzzySet(
 			distanceBoundary - distanceTolerance, distanceBoundary + distanceTolerance,
 			std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity()
-		);
+		));
 	}
 	~FeatureDistance()
 	{
@@ -83,6 +83,7 @@ public:
 		{
 			delete fuzzySet;
 		}
+		m_fuzzySets.clear();
 	}
 
 	float low(float t)
