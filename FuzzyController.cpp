@@ -151,6 +151,10 @@ FuzzyController::FuzzyController(float distanceBoundary, float distanceTolerance
 	m_featureDirection = createFeatureDirection(directionTolerance);
 	m_featureSide = createFeatureSide(sideTolerance);
 	m_featureAngle = createFeatureAngle(boundaryAngle, angleTolerance);
+
+	m_fuzzyRuleSet = Parser().parse(
+		"rule_tables\\base_rule_table.rls", { m_featureDistance, m_featureDirection,m_featureSide, m_featureAngle }
+	);
 }
 
 FuzzyController::~FuzzyController()
@@ -164,63 +168,13 @@ FuzzyController::~FuzzyController()
 COMMAND FuzzyController::getCommand(float distanceParameter, float directionParameter, float sideParameter,
 	float angleParameter) const
 {
-	const double lowDistance = m_featureDistance->getValue("low", distanceParameter),
-		highDistance = m_featureDistance->getValue("high", distanceParameter),
-		in = m_featureDirection->getValue("in", directionParameter),
-		inBackwards = m_featureDirection->getValue("back", directionParameter),
-		out = m_featureDirection->getValue("out", directionParameter),
-		left = m_featureSide->getValue("left", sideParameter),
-		right = m_featureSide->getValue("right", sideParameter),
-		zeroAngle = m_featureAngle->getValue("zero", angleParameter),
-		lowAngle = m_featureAngle->getValue("low", angleParameter),
-		highAngle = m_featureAngle->getValue("high", angleParameter);
+	auto output = m_fuzzyRuleSet.computeRulesForData({ distanceParameter, directionParameter, sideParameter, angleParameter });
+	double leftProbability = output.at("left");
+	double rightProbability = output.at("right");
+	double noTurnProbability = output.at("no_turn");
 
-	double leftProbability = 0.0f,
-		rightProbability = 0.0f,
-		noTurnProbability = 0.0f;
-
-	{
-		static int check = 0;
-		if (check == 0)
-		{
-			++check;
-			Parser parser;
-			FuzzyRules fuzzyRules = parser.parse(
-				"rule_tables\\base_rule_table.rls", { m_featureDistance, m_featureDirection,m_featureSide, m_featureAngle }
-			);
-			fuzzyRules.printRules();
-			getchar();
-		}
-	}
-
-	// fuzzy rules
-	leftProbability = computeRuleValue({ leftProbability, inBackwards, 1 - zeroAngle, left });
-	rightProbability = computeRuleValue({ rightProbability, inBackwards, 1 - zeroAngle, right });
-
-	rightProbability = computeRuleValue({ rightProbability, highDistance, in, lowAngle, left });
-	leftProbability = computeRuleValue({ leftProbability, highDistance, in, lowAngle, right });
-	noTurnProbability = computeRuleValue({ noTurnProbability, highDistance, in, highAngle });
-
-	rightProbability = computeRuleValue({ rightProbability, highDistance, out, left });
-	leftProbability = computeRuleValue({ leftProbability, highDistance, out, right });
-	rightProbability = computeRuleValue({ rightProbability, highDistance, zeroAngle, left });
-
-	leftProbability = computeRuleValue({ leftProbability, highDistance, zeroAngle, right });
-	leftProbability = computeRuleValue({ leftProbability, lowDistance, in, lowAngle, left });
-	leftProbability = computeRuleValue({ leftProbability, lowDistance, in, highAngle, left });
-
-	rightProbability = computeRuleValue({ rightProbability, lowDistance, in, lowAngle, right });
-	rightProbability = computeRuleValue({ rightProbability, lowDistance, in, highAngle, right });
-	rightProbability = computeRuleValue({ rightProbability, lowDistance, out, lowAngle, left });
-
-	leftProbability = computeRuleValue({ leftProbability, lowDistance, out, lowAngle, right });
-	rightProbability = computeRuleValue({ rightProbability, lowDistance, out, highAngle, left });
-	leftProbability = computeRuleValue({ leftProbability, lowDistance, out, highAngle, right });
-
-	noTurnProbability = computeRuleValue({ noTurnProbability, lowDistance, zeroAngle });
-
-	std::cout << "inputs: " << lowDistance << " " << highDistance << std::endl;
 	std::cout << "probabilities: " << leftProbability << " " << rightProbability << " " << noTurnProbability << std::endl;
+
 	if (leftProbability >= rightProbability && leftProbability >= noTurnProbability)
 	{
 		return TURN_LEFT;

@@ -3,7 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include "Feature.h"
-#include "FuzzyRules.h"
+#include "FuzzyRuleSet.h"
 
 class Parser
 {
@@ -17,10 +17,10 @@ private:
 	void extractSpecialColumnsIndexes(const std::string &columnNames);
 	std::vector<unsigned> getOrderOfFeatures(const std::string& columnNames,
 	                                         const std::vector<const Feature*> features);
-	FuzzyRules parseRulesToFuzzyRules(std::ifstream& stream,
+	FuzzyRuleSet parseRulesToFuzzyRules(std::ifstream& stream,
 	                                  const std::vector<unsigned>& order, const std::vector<const Feature*>& features) const;
 
 public:
 	Parser() = default;
-	FuzzyRules parse(std::string filename, const std::vector<const Feature*> &features);
+	FuzzyRuleSet parse(std::string filename, const std::vector<const Feature*> &features);
 };

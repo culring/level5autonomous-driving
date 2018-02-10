@@ -1,6 +1,7 @@
 #pragma once
 #include "FuzzySet.h"
 #include "Feature.h"
+#include "FuzzyRuleSet.h"
 
 template<typename T>
 T computeRuleValue(const std::initializer_list<T>& list);
@@ -12,6 +13,7 @@ private:
 	Feature *m_featureAngle;
 	Feature *m_featureDirection;
 	Feature *m_featureSide;
+	FuzzyRuleSet m_fuzzyRuleSet;
 
 	Feature* createFeatureDistance(float distanceBoundary = 70.0f, float distanceTolerance = 0.01f);
 	Feature* createFeatureDirection(float directionTolerance = 5.0f);

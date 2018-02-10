@@ -4,7 +4,7 @@
 #include "Feature.h"
 #include <map>
 
-class FuzzyRules
+class FuzzyRuleSet
 {
 protected:
 	std::vector<std::string> m_outputs;
@@ -14,13 +14,13 @@ protected:
 	virtual std::map<std::string, double> mergeOutputValues(std::vector<double> values) const;
 
 public:
-	FuzzyRules() = default;
-	FuzzyRules(std::vector<std::string> outputs,
+	FuzzyRuleSet() = default;
+	FuzzyRuleSet(std::vector<std::string> outputs,
 		std::vector<const Feature*> features,
 		std::vector<std::vector<std::string>> rules) :
 	m_outputs(std::move(outputs)), m_features(std::move(features)), m_rules(std::move(rules)) {}
 
-	std::map<std::string, double> FuzzyRules::computeRulesForData(const std::vector<double> &data) const;
+	std::map<std::string, double> FuzzyRuleSet::computeRulesForData(const std::vector<double> &data) const;
 
 	void printRules();
 };

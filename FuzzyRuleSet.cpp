@@ -1,7 +1,7 @@
-#include "FuzzyRules.h"
+#include "FuzzyRuleSet.h"
 #include <iostream>
 
-std::map<std::string, double> FuzzyRules::mergeOutputValues(std::vector<double> values) const
+std::map<std::string, double> FuzzyRuleSet::mergeOutputValues(std::vector<double> values) const
 {
 	std::map<std::string, double> outputValues;
 	for(int i = 0; i<values.size(); ++i)
@@ -15,7 +15,7 @@ std::map<std::string, double> FuzzyRules::mergeOutputValues(std::vector<double> 
 	return outputValues;
 }
 
-std::map<std::string, double> FuzzyRules::computeRulesForData(const std::vector<double> &data) const
+std::map<std::string, double> FuzzyRuleSet::computeRulesForData(const std::vector<double> &data) const
 {
 	std::vector<double> values;
 	// for each rule
@@ -35,6 +35,7 @@ std::map<std::string, double> FuzzyRules::computeRulesForData(const std::vector<
 					minimum,
 					1 - m_features[j]->getValue(m_rules[i][j].substr(1, m_rules[i][j].size()), data[j])
 				);
+				continue;
 			}
 			minimum = std::min(
 				minimum,
@@ -46,7 +47,7 @@ std::map<std::string, double> FuzzyRules::computeRulesForData(const std::vector<
 	return mergeOutputValues(values);
 }
 
-void FuzzyRules::printRules()
+void FuzzyRuleSet::printRules()
 {
 	for(int i = 0; i<m_rules.size(); ++i)
 	{

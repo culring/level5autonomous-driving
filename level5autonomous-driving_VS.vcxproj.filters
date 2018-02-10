@@ -81,13 +81,13 @@
     <ClCompile Include="Parser.cpp">
       <Filter>Source Files\Controller</Filter>
     </ClCompile>
-    <ClCompile Include="FuzzyRules.cpp">
-      <Filter>Source Files\Controller\Fuzzy</Filter>
-    </ClCompile>
     <ClCompile Include="Feature.cpp">
       <Filter>Source Files\Controller\Fuzzy</Filter>
     </ClCompile>
     <ClCompile Include="FuzzyController.cpp">
+      <Filter>Source Files\Controller\Fuzzy</Filter>
+    </ClCompile>
+    <ClCompile Include="FuzzyRuleSet.cpp">
       <Filter>Source Files\Controller\Fuzzy</Filter>
     </ClCompile>
   </ItemGroup>
@@ -125,9 +125,6 @@
     <ClInclude Include="Feature.h">
       <Filter>Header Files\Controller\Fuzzy</Filter>
     </ClInclude>
-    <ClInclude Include="FuzzyRules.h">
-      <Filter>Header Files\Controller\Fuzzy</Filter>
-    </ClInclude>
     <ClInclude Include="Parser.h">
       <Filter>Header Files\Controller</Filter>
     </ClInclude>
@@ -135,6 +132,9 @@
       <Filter>Header Files\Controller\Exceptions</Filter>
     </ClInclude>
     <ClInclude Include="FuzzyController.h">
+      <Filter>Header Files\Controller\Fuzzy</Filter>
+    </ClInclude>
+    <ClInclude Include="FuzzyRuleSet.h">
       <Filter>Header Files\Controller\Fuzzy</Filter>
     </ClInclude>
   </ItemGroup>

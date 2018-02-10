@@ -85,7 +85,7 @@ std::vector<unsigned> Parser::getOrderOfFeatures(const std::string& columnNames,
 	return order;
 }
 
-FuzzyRules Parser::parseRulesToFuzzyRules(std::ifstream &stream,
+FuzzyRuleSet Parser::parseRulesToFuzzyRules(std::ifstream &stream,
 										  const std::vector<unsigned int>& order,
 										  const std::vector<const Feature*>& features) const
 {
@@ -133,10 +133,10 @@ FuzzyRules Parser::parseRulesToFuzzyRules(std::ifstream &stream,
 			++rule;
 		}
 	}
-	return FuzzyRules(outputs, features, rules);
+	return FuzzyRuleSet(outputs, features, rules);
 }
 
-FuzzyRules Parser::parse(std::string filename, const std::vector<const Feature*>& features)
+FuzzyRuleSet Parser::parse(std::string filename, const std::vector<const Feature*>& features)
 {
 	std::ifstream file;
 	file.open(filename);

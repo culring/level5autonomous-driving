@@ -379,7 +379,7 @@ float Race::getCarToTrackAngle()
 
 void Race::updateSegmentIndex()
 {
-	const float DISTANCE = 220.0f;
+	const float DISTANCE = 150.0f;
 	sf::Vector2f carPosition = { getCarX(), getCarY() },
 		nextCenter = getNextCenter();
 	sf::Vector2f carToCenter = nextCenter - carPosition;
