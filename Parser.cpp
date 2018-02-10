@@ -76,12 +76,6 @@ std::vector<unsigned> Parser::getOrderOfFeatures(const std::string& columnNames,
 		}
 	}
 
-	for(const auto& o : order)
-	{
-		std::cout << o << " ";
-	}
-	std::cout << std::endl;
-
 	return order;
 }
 

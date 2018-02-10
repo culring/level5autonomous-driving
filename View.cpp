@@ -5,7 +5,7 @@
 #include "View.h"
 
 View::View() : 
-	m_window(new sf::RenderWindow(sf::VideoMode(1280, 720), "Racing game")), m_model(nullptr), m_viewCar(nullptr), m_viewTrack(nullptr)
+	m_window(new sf::RenderWindow(sf::VideoMode(1280, 720), "level5autonomous-driving")), m_model(nullptr), m_viewCar(nullptr), m_viewTrack(nullptr)
 {
 	resetView();
 	initMenuElements();
