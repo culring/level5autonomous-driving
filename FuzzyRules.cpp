@@ -1,4 +1,5 @@
 #include "FuzzyRules.h"
+#include <iostream>
 
 std::map<std::string, double> FuzzyRules::mergeOutputValues(std::vector<double> values) const
 {
@@ -14,16 +15,27 @@ std::map<std::string, double> FuzzyRules::mergeOutputValues(std::vector<double> 
 	return outputValues;
 }
 
-std::map<std::string, double> FuzzyRules::computeRulesForData(std::vector<double> data) const
+std::map<std::string, double> FuzzyRules::computeRulesForData(const std::vector<double> &data) const
 {
 	std::vector<double> values;
 	// for each rule
 	for (auto i = 0; i < m_rules.size(); ++i)
 	{
 		// for each factor in a rule
-		double minimum = std::numeric_limits<double>::infinity();
+		double minimum = 1;
 		for(int j = 0; j<m_rules[i].size(); ++j)
 		{
+			if(m_rules[i][j] == "x")
+			{
+				continue;
+			}
+			if(m_rules[i][j][0] == '~')
+			{
+				minimum = std::min(
+					minimum,
+					1 - m_features[j]->getValue(m_rules[i][j].substr(1, m_rules[i][j].size()), data[j])
+				);
+			}
 			minimum = std::min(
 				minimum,
 				m_features[j]->getValue(m_rules[i][j], data[j])
@@ -32,4 +44,24 @@ std::map<std::string, double> FuzzyRules::computeRulesForData(std::vector<double
 		values.push_back(minimum);
 	}
 	return mergeOutputValues(values);
+}
+
+void FuzzyRules::printRules()
+{
+	for(int i = 0; i<m_rules.size(); ++i)
+	{
+		std::cout << "IF ";
+		bool isFirst = true;
+		for(int j = 0; j<m_features.size(); ++j)
+		{
+			if (m_rules[i][j] == "x")
+			{
+				continue;
+			}
+			std::cout << (isFirst ? "" : " AND ");
+			std::cout << m_features[j]->getName() << "=" << m_rules[i][j];
+			isFirst = false;
+		}
+		std::cout << " THEN " << m_outputs[i] << std::endl;
+	}
 }

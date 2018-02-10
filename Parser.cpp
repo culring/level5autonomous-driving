@@ -1,15 +1,19 @@
 #include "Parser.h"
 #include "FileInputException.h"
+#include <iostream>
 
 std::vector<std::string> Parser::parseWordsFromLine(const std::string& line) const
 {
 	std::istringstream istringstream(line);
 	std::vector<std::string> output;
-	while(istringstream)
+	while (istringstream)
 	{
 		std::string word;
 		istringstream >> word;
-		output.push_back(word);
+		if(!word.empty())
+		{
+			output.push_back(word);
+		}
 	}
 
 	return output;
@@ -21,20 +25,20 @@ void Parser::extractSpecialColumnsIndexes(const std::string& columnNames)
 	unsigned int index = -1;
 	bool isFoundRuleNumberColumn = false;
 	bool isFoundOutputColumn = false;
-	outputColumnIndex = ruleNumberColumnIndex = -1;
+	m_outputColumnIndex = m_ruleNumberColumnIndex = -1;
 	for (auto const& word : words)
 	{
 		++index;
-		if (word == ruleNumberColumnName)
+		if (word == m_ruleNumberColumnName)
 		{
 			isFoundRuleNumberColumn = true;
-			ruleNumberColumnIndex = index;
+			m_ruleNumberColumnIndex = index;
 			continue;
 		}
-		if (word == outputColumnName)
+		if (word == m_outputColumnName)
 		{
 			isFoundOutputColumn = true;
-			outputColumnIndex = index;
+			m_outputColumnIndex = index;
 			continue;
 		}
 	}
@@ -44,83 +48,105 @@ void Parser::extractSpecialColumnsIndexes(const std::string& columnNames)
 	}
 }
 
-std::vector<const Feature*> Parser::getOrderedFeatures(std::string columnNames,
-	const std::vector<const Feature*> features) const
+std::vector<unsigned> Parser::getOrderOfFeatures(const std::string& columnNames,
+                                                 const std::vector<const Feature*> features)
 {
-	std::vector<const Feature*> orderedFeatures;
+	extractSpecialColumnsIndexes(columnNames);
+	auto words = parseWordsFromLine(columnNames);
+	std::vector<unsigned int> order(words.size());
+	for (int i = 0; i < words.size(); ++i)
 	{
-		auto words = parseWordsFromLine(columnNames);
-		for (auto const& word : words)
+		if (i == m_outputColumnIndex || i == m_ruleNumberColumnIndex)
 		{
-			if (word == ruleNumberColumnName || word == outputColumnName)
+			continue;
+		}
+		bool isFound = false;
+		for (int j = 0; j < features.size(); ++j)
+		{
+			if (words[i] == features[j]->getName())
 			{
-				continue;
-			}
-			for (auto const& feature : features)
-			{
-				bool isFound = false;
-				if (word == feature->getName())
-				{
-					orderedFeatures.push_back(feature);
-					isFound = true;
-				}
-				if (!isFound)
-				{
-					throw FileInputException();
-				}
+				isFound = true;
+				order[i] = j;
+				break;
 			}
 		}
+		if (!isFound)
+		{
+			throw FileInputException();
+		}
 	}
-	return orderedFeatures;
+
+	for(const auto& o : order)
+	{
+		std::cout << o << " ";
+	}
+	std::cout << std::endl;
+
+	return order;
 }
 
 FuzzyRules Parser::parseRulesToFuzzyRules(std::ifstream &stream,
-										  const std::vector<const Feature*>& orderedFeatures) const
+										  const std::vector<unsigned int>& order,
+										  const std::vector<const Feature*>& features) const
 {
 	std::vector<std::vector<std::string>> rules;
 	std::vector<std::string> outputs;
 	{
 		std::string line;
 		int rule = 0;
+		// iterate through all rules from stream
 		while (std::getline(stream, line))
 		{
+			rules.emplace_back(features.size());
 			auto words = parseWordsFromLine(line);
-			for (unsigned int i = 0, j = 0; i < words.size(); ++i)
+			for (unsigned int i = 0; i < words.size(); ++i)
 			{
-				if (i == outputColumnIndex)
+				if (i == m_outputColumnIndex)
 				{
 					outputs.push_back(words[i]);
 					continue;
 				}
-				if(i == ruleNumberColumnIndex)
+				if(i == m_ruleNumberColumnIndex)
 				{
 					continue;
 				}
-				if(!orderedFeatures[j]->containsName(words[i]))
+				if(words[i] != "x")
 				{
-					throw FileInputException();
+					if (words[i][0] == '~')
+					{
+						const std::string substring = words[i].substr(1, words[i].size());
+						if (!features[order[i]]->containsName(substring))
+						{
+							throw FileInputException();
+						}
+					}
+					else
+					{
+						if (!features[order[i]]->containsName(words[i]))
+						{
+							throw FileInputException();
+						}
+					}
 				}
-				rules[rule].push_back(words[i]);
-				++j;
+				rules[rule][order[i]] = words[i];
 			}
 			++rule;
 		}
 	}
-	return FuzzyRules(outputs, orderedFeatures, rules);
+	return FuzzyRules(outputs, features, rules);
 }
 
 FuzzyRules Parser::parse(std::string filename, const std::vector<const Feature*>& features)
 {
-	std::ifstream file(filename, std::ifstream::failbit | std::ifstream::badbit | std::ifstream::eofbit);
+	std::ifstream file;
+	file.open(filename);
 	std::string line;
 	// read column names
 	std::getline(file, line);
 	// set special columns indexes
 	// and get features in column order
-	extractSpecialColumnsIndexes(line);
-	auto orderedFeatures = getOrderedFeatures(line, features);
-	auto fuzzyRules = parseRulesToFuzzyRules(file, orderedFeatures);
+	auto order = getOrderOfFeatures(line, features);
+	auto fuzzyRules = parseRulesToFuzzyRules(file, order, features);
 	file.close();
-
 	return fuzzyRules;
 }

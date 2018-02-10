@@ -8,17 +8,17 @@
 class Parser
 {
 private:
-	const std::string outputColumnName = "out";
-	const std::string ruleNumberColumnName = "rule_number";
-	unsigned int outputColumnIndex;
-	unsigned int ruleNumberColumnIndex;
+	const std::string m_outputColumnName = "out";
+	const std::string m_ruleNumberColumnName = "rule_number";
+	unsigned int m_outputColumnIndex;
+	unsigned int m_ruleNumberColumnIndex;
 
 	std::vector<std::string> parseWordsFromLine(const std::string &line) const;
 	void extractSpecialColumnsIndexes(const std::string &columnNames);
-	std::vector<const Feature*> getOrderedFeatures(std::string columnNames, 
-												   const std::vector<const Feature*> features) const;
-	FuzzyRules parseRulesToFuzzyRules(std::ifstream &stream,
-									  const std::vector<const Feature*>& orderedFeatures) const;
+	std::vector<unsigned> getOrderOfFeatures(const std::string& columnNames,
+	                                         const std::vector<const Feature*> features);
+	FuzzyRules parseRulesToFuzzyRules(std::ifstream& stream,
+	                                  const std::vector<unsigned>& order, const std::vector<const Feature*>& features) const;
 
 public:
 	Parser() = default;

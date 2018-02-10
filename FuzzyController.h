@@ -8,10 +8,15 @@ T computeRuleValue(const std::initializer_list<T>& list);
 class FuzzyController
 {
 private:
-	FeatureDistance *m_featureDistance;
-	FeatureAngle *m_featureAngle;
-	FeatureDirection *m_featureDirection;
-	FeatureSide *m_featureSide;
+	Feature *m_featureDistance;
+	Feature *m_featureAngle;
+	Feature *m_featureDirection;
+	Feature *m_featureSide;
+
+	Feature* createFeatureDistance(float distanceBoundary = 70.0f, float distanceTolerance = 0.01f);
+	Feature* createFeatureDirection(float directionTolerance = 5.0f);
+	Feature* createFeatureSide(float sideTolerance = 0.01f);
+	Feature* createFeatureAngle(float boundaryAngle = 60.0f, float angleTolerance = 0.01f);
 
 public:
 	FuzzyController(
@@ -24,7 +29,6 @@ public:
 		float sideTolerance = 0.01f,
 		float boundaryAngle = 60.0f, float angleTolerance = 0.01f
 	);
-
 	~FuzzyController();
 
 	COMMAND getCommand(
