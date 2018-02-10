@@ -2,7 +2,7 @@
 
 TriangleFuzzySet::TriangleFuzzySet(float left, float middle, float right)
 {
-	if(left >= right || middle < left || middle > right)
+	if (left >= right || middle < left || middle > right)
 	{
 		throw WrongFuzzyParameters();
 	}
@@ -13,16 +13,16 @@ TriangleFuzzySet::TriangleFuzzySet(float left, float middle, float right)
 
 float TriangleFuzzySet::getValue(float t)
 {
-	if(t < m_left)
+	if (t < m_left)
 	{
 		return 0;
 	}
-	if(t <= m_middle)
+	if (t <= m_middle)
 	{
 		if (m_left == m_middle) return 1.0f;
 		return (t - m_left) / (m_middle - m_left);
 	}
-	if(t <= m_right)
+	if (t <= m_right)
 	{
 		if (m_right == m_middle) return 1.0f;
 		return (m_right - t) / (m_right - m_middle);
@@ -34,7 +34,7 @@ SingletonFuzzySet::SingletonFuzzySet(float x) : m_x(x) {}
 
 float SingletonFuzzySet::getValue(float t)
 {
-	if(t == m_x)
+	if (t == m_x)
 	{
 		return 1.0f;
 	}
@@ -43,7 +43,7 @@ float SingletonFuzzySet::getValue(float t)
 
 TrapezoidFuzzySet::TrapezoidFuzzySet(float leftBottomBase, float leftTopBase, float rightTopBase, float rightBottomBase)
 {
-	if(leftBottomBase > leftTopBase || leftTopBase >= rightTopBase || rightTopBase > rightBottomBase)
+	if (leftBottomBase > leftTopBase || leftTopBase >= rightTopBase || rightTopBase > rightBottomBase)
 	{
 		throw WrongFuzzyParameters();
 	}
@@ -55,20 +55,20 @@ TrapezoidFuzzySet::TrapezoidFuzzySet(float leftBottomBase, float leftTopBase, fl
 
 float TrapezoidFuzzySet::getValue(float t)
 {
-	if(t < m_leftBottomBase)
+	if (t < m_leftBottomBase)
 	{
 		return 0.0f;
 	}
-	if(t <= m_leftTopBase)
+	if (t <= m_leftTopBase)
 	{
 		if (m_leftBottomBase == m_leftTopBase) return 1.0f;
 		return (t - m_leftBottomBase) / (m_leftTopBase - m_leftBottomBase);
 	}
-	if(t <= m_rightTopBase)
+	if (t <= m_rightTopBase)
 	{
 		return 1.0f;
 	}
-	if(t <= m_rightBottomBase)
+	if (t <= m_rightBottomBase)
 	{
 		return (m_rightBottomBase - t) / (m_rightBottomBase - m_rightTopBase);
 	}
@@ -80,7 +80,7 @@ float TrapezoidFuzzySet::getValue(float t)
 
 CompundFuzzySet::~CompundFuzzySet()
 {
-	for(FuzzySet *fuzzySet : m_fuzzySets)
+	for (FuzzySet *fuzzySet : m_fuzzySets)
 	{
 		delete fuzzySet;
 	}
@@ -95,7 +95,7 @@ void CompundFuzzySet::addFuzzySet(FuzzySet* fuzzySet)
 float CompundFuzzySet::getValue(float t)
 {
 	float maximum = 0.0f;
-	for(FuzzySet *fuzzySet : m_fuzzySets)
+	for (FuzzySet *fuzzySet : m_fuzzySets)
 	{
 		maximum = std::max(maximum, fuzzySet->getValue(t));
 	}

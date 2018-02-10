@@ -16,6 +16,7 @@
 #include "Model.h"
 #include <SFML/Window/Keyboard.hpp>
 #include "FuzzySet.h"
+#include "FuzzyController.h"
 
 class Controller {
 private:
