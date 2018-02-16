@@ -1,3 +1,4 @@
 # level5autonomous-driving
 
-![MVC](https://github.com/culring/level5autonomous-driving/blob/master/MVC.png)
+![main menu](https://github.com/culring/level5autonomous-driving/blob/feature/rule_parser/screenshots/main_menu_1.png)
+![gameplay](https://github.com/culring/level5autonomous-driving/blob/feature/rule_parser/screenshots/gameplay_1.png)
