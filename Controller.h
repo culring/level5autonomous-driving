@@ -16,7 +16,7 @@
 #include "Model.h"
 #include <SFML/Window/Keyboard.hpp>
 #include "FuzzySet.h"
-#include "FuzzyController.h"
+#include "FuzzyDriver.h"
 
 class Controller {
 private:
@@ -25,7 +25,7 @@ private:
 	sf::RenderWindow *window;
 
 	// fuzzy
-	FuzzyController fuzzyController;
+	FuzzyDriver fuzzyController;
 
 public:
 	Controller();

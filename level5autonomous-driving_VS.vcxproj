@@ -113,8 +113,7 @@
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="Feature.cpp" />
     <ClCompile Include="FileInputException.cpp" />
-    <ClCompile Include="fuzzy.cpp" />
-    <ClCompile Include="FuzzyController.cpp" />
+    <ClCompile Include="FuzzyDriver.cpp" />
     <ClCompile Include="FuzzyRuleSet.cpp" />
     <ClCompile Include="FuzzySet.cpp" />
     <ClCompile Include="main.cpp" />
@@ -130,8 +129,7 @@
     <ClInclude Include="Controller.h" />
     <ClInclude Include="Feature.h" />
     <ClInclude Include="FileInputException.h" />
-    <ClInclude Include="fuzzy.h" />
-    <ClInclude Include="FuzzyController.h" />
+    <ClInclude Include="FuzzyDriver.h" />
     <ClInclude Include="FuzzyRuleSet.h" />
     <ClInclude Include="FuzzySet.h" />
     <ClInclude Include="Model.h" />

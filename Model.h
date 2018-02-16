@@ -10,7 +10,6 @@
 #define LEVEL5AUTONOMOUS_DRIVING_MODEL_H
 
 #include <vector>
-#include "fuzzy.h"
 #include <SFML/System/Vector2.hpp>
 
 #define TRACK_SIZE 16
@@ -89,13 +88,6 @@ class Race
 public:
 	Car *vehicle;
 	Track *map;
-
-	//	Fuzzy *fuzzySetTurn;
-	Fuzzy *fuzzySetSpeedForTurn;
-	Fuzzy *fuzzySetSpeedForStraight;
-
-	Fuzzy *fuzzySetLeft;
-	Fuzzy *fuzzySetRight;
 
 	std::vector<sf::Vector2f> m_segmentsPositions;
 	std::vector<int> directions;

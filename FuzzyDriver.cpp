@@ -1,4 +1,4 @@
-#include "FuzzyController.h"
+#include "FuzzyDriver.h"
 #include <iostream>
 #include "Feature.h"
 #include "Parser.h"
@@ -10,7 +10,7 @@ T computeRuleValue(const std::initializer_list<T>& list)
 	return std::max(*list.begin(), min(list2));
 }
 
-Feature* FuzzyController::createFeatureDistance(float distanceBoundary, float distanceTolerance)
+Feature* FuzzyDriver::createFeatureDistance(float distanceBoundary, float distanceTolerance)
 {
 	Feature *feature;
 	feature = new Feature("distance", { { "low", 0 },{ "high", 1 } });
@@ -28,7 +28,7 @@ Feature* FuzzyController::createFeatureDistance(float distanceBoundary, float di
 	return feature;
 }
 
-Feature* FuzzyController::createFeatureDirection(float directionTolerance)
+Feature* FuzzyDriver::createFeatureDirection(float directionTolerance)
 {
 	Feature *feature;
 	feature = new Feature("direction", { { "in", 0 },{ "back", 1 },{ "out", 2 } });
@@ -70,7 +70,7 @@ Feature* FuzzyController::createFeatureDirection(float directionTolerance)
 	return feature;
 }
 
-Feature* FuzzyController::createFeatureSide(float sideTolerance)
+Feature* FuzzyDriver::createFeatureSide(float sideTolerance)
 {
 	Feature *feature;
 	feature = new Feature("side", { {"left", 0}, {"right", 1} });
@@ -103,7 +103,7 @@ Feature* FuzzyController::createFeatureSide(float sideTolerance)
 	return feature;
 }
 
-Feature* FuzzyController::createFeatureAngle(float boundaryAngle, float angleTolerance)
+Feature* FuzzyDriver::createFeatureAngle(float boundaryAngle, float angleTolerance)
 {
 	Feature *feature;
 	feature = new Feature("angle", { { "zero", 0 }, { "low", 1 }, { "high", 2 } });
@@ -144,8 +144,8 @@ Feature* FuzzyController::createFeatureAngle(float boundaryAngle, float angleTol
 	return feature;
 }
 
-FuzzyController::FuzzyController(float distanceBoundary, float distanceTolerance, float directionTolerance,
-	float sideTolerance, float boundaryAngle, float angleTolerance)
+FuzzyDriver::FuzzyDriver(float distanceBoundary, float distanceTolerance, float directionTolerance,
+                         float sideTolerance, float boundaryAngle, float angleTolerance)
 {
 	m_featureDistance = createFeatureDistance(distanceBoundary, distanceTolerance);
 	m_featureDirection = createFeatureDirection(directionTolerance);
@@ -153,11 +153,11 @@ FuzzyController::FuzzyController(float distanceBoundary, float distanceTolerance
 	m_featureAngle = createFeatureAngle(boundaryAngle, angleTolerance);
 
 	m_fuzzyRuleSet = Parser().parse(
-		"rule_tables\\base_rule_table.rls", { m_featureDistance, m_featureDirection,m_featureSide, m_featureAngle }
+		"rule_tables\\base_rule_table.rls", { m_featureDistance, m_featureDirection, m_featureSide, m_featureAngle }
 	);
 }
 
-FuzzyController::~FuzzyController()
+FuzzyDriver::~FuzzyDriver()
 {
 	delete m_featureAngle;
 	delete m_featureDirection;
@@ -165,15 +165,16 @@ FuzzyController::~FuzzyController()
 	delete m_featureSide;
 }
 
-COMMAND FuzzyController::getCommand(float distanceParameter, float directionParameter, float sideParameter,
+COMMAND FuzzyDriver::getCommand(float distanceParameter, float directionParameter, float sideParameter,
 	float angleParameter) const
 {
 	auto output = m_fuzzyRuleSet.computeRulesForData({ distanceParameter, directionParameter, sideParameter, angleParameter });
-	double leftProbability = output.at("left");
-	double rightProbability = output.at("right");
-	double noTurnProbability = output.at("no_turn");
+	
+	double leftProbability = (output.find("left") != output.end() ? output.at("left") : 0);
+	double rightProbability = (output.find("right") != output.end() ? output.at("right") : 0);
+	double noTurnProbability = (output.find("no_turn") != output.end() ? output.at("no_turn") : 0);
 
-	std::cout << "probabilities: " << leftProbability << " " << rightProbability << " " << noTurnProbability << std::endl;
+//	std::cout << "probabilities: " << leftProbability << " " << rightProbability << " " << noTurnProbability << std::endl;
 
 	if (leftProbability >= rightProbability && leftProbability >= noTurnProbability)
 	{

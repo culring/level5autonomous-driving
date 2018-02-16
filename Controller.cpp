@@ -146,8 +146,8 @@ void Controller::aiMode() {
 	int segNo = 0;
 	float dirSub = 0.0f;
 
-//	model->vehicle->speed = 7.0f;
-	model->vehicle->speed = 5.0f;
+	model->vehicle->speed = 10.0f;
+//	model->vehicle->speed = 5.0f;
 
 	while(this->window->isOpen()) {
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
@@ -170,7 +170,7 @@ void Controller::aiMode() {
 		float angleParameter = model->getCarDirectionToTrackAngle();
 		angleParameter *= 180.0f / M_PI;
 
-		std::cout << distanceParameter << " | " << directionParameter << " | " << sideParameter << " | " << angleParameter << std::endl;
+//		std::cout << distanceParameter << " | " << directionParameter << " | " << sideParameter << " | " << angleParameter << std::endl;
 
 		// fuzzy rules
 		COMMAND command = fuzzyController.getCommand(

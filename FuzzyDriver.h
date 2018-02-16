@@ -6,7 +6,7 @@
 template<typename T>
 T computeRuleValue(const std::initializer_list<T>& list);
 
-class FuzzyController
+class FuzzyDriver
 {
 private:
 	Feature *m_featureDistance;
@@ -21,17 +21,17 @@ private:
 	Feature* createFeatureAngle(float boundaryAngle = 60.0f, float angleTolerance = 0.01f);
 
 public:
-	FuzzyController(
-		//		float distanceBoundary = 52.0f, float distanceTolerance = 18.0f, 
-		//		float directionTolerance = 2.0f,
-		//		float sideTolerance = 5.0f,
-		//		float boundaryAngle = 45.0f, float angleTolerance = 5.0f
+	FuzzyDriver(
+//				float distanceBoundary = 52.0f, float distanceTolerance = 18.0f, 
+//				float directionTolerance = 2.0f,
+//				float sideTolerance = 5.0f,
+//				float boundaryAngle = 45.0f, float angleTolerance = 5.0f
 		float distanceBoundary = 70.0f, float distanceTolerance = 0.01f,
-		float directionTolerance = 5.0f,
+		float directionTolerance = 0.1f,
 		float sideTolerance = 0.01f,
 		float boundaryAngle = 60.0f, float angleTolerance = 0.01f
 	);
-	~FuzzyController();
+	~FuzzyDriver();
 
 	COMMAND getCommand(
 		float distanceParameter,
